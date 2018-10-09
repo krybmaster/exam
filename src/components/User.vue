@@ -10,7 +10,7 @@
           Результат тестирования Вы получите на почту: {{ userInfo.email }}
       </div>
 
-      <router-link :to="{ name: 'Question', params: { id: 1 }}">Пользователь</router-link>
+      <router-link :to="{ name: 'Question', params: { id: 1 }}">Начать</router-link>
 
     </v-content>
 
@@ -31,12 +31,12 @@
     data: () => ({
       userInfo: {
         email: '',
-        name: '',
-        mock: 'mock'
+        name: ''
       }
     }),
     created: function () {
       this.userInfo = store.state.lp
     }
+
   }
 </script>
