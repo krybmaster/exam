@@ -1,66 +1,53 @@
 <template>
   <form>
     <v-text-field
-      label="E-mail"
-      v-model="email"
-      :error-messages="emailErrors"
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
+      v-model="name"
+      :error-messages="nameErrors"
+      :counter="40"
+      label="Name"
       required
+      @input="$v.name.$touch()"
+      @blur="$v.name.$touch()"
     ></v-text-field>
     <v-text-field
-      label="Password"
-      v-model="password"
-      :error-messages="passwordErrors"
-      :counter="20"
-      @input="$v.password.$touch()"
-      @blur="$v.password.$touch()"
+      v-model="email"
+      :error-messages="emailErrors"
+      label="E-mail"
       required
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
     ></v-text-field>
-    <v-checkbox
-      label="Чужой компьютер"
-      v-model="checkbox"
-      required
-    ></v-checkbox>
+
     <v-btn @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
   </form>
 </template>
 
 <script>
-  import { validationMixin } from 'vuelidate'
-  import { required, maxLength, minLength, email, password } from 'vuelidate/lib/validators'
-
   import { store } from '../main.js'
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email } from 'vuelidate/lib/validators'
+  
 
   export default {
     mixins: [validationMixin],
 
     validations: {
-      email: { required, email },
-      password: { required, minLength: minLength(8), maxLength: maxLength(15) }
+      name: { required, maxLength: maxLength(40) },
+      email: { required, email }
     },
 
     data: () => ({
-      email: '',
-      password: '',
-      select: null,
-      checkbox: false
+      name: '',
+      email: ''
     }),
 
     computed: {
-      checkboxErrors () {
+      nameErrors () {
         const errors = []
-        if (!this.$v.checkbox.$dirty) return errors
-        !this.$v.checkbox.required && errors.push('You must agree to continue!')
-        return errors
-      },
-      passwordErrors () {
-        const errors = []
-        if (!this.$v.password.$dirty) return errors
-        !this.$v.password.maxLength && errors.push('Password must be at max 15 characters long')
-        !this.$v.password.minLength && errors.push('Password must be at min 8 characters long')
-        !this.$v.password.required && errors.push('Password is required.')
+        if (!this.$v.name.$dirty) return errors
+        !this.$v.name.maxLength && errors.push('Name must be at most 40 characters long')
+        !this.$v.name.required && errors.push('Name is required.')
         return errors
       },
       emailErrors () {
@@ -74,76 +61,15 @@
 
     methods: {
       submit () {
-        this.$v.$touch();
-        store.commit('loginAndPassword', this.$data  );
+        this.$v.$touch()
+        store.commit('email', this.$data  );
         store.dispatch('logIn');
       },
       clear () {
         this.$v.$reset()
+        this.name = ''
         this.email = ''
-        this.password = ''
-        this.checkbox = false
       }
     }
   }
 </script>
-
-
-
-<!--
-
-
-
-<template>
-  <section>
-    <h2>Авторизация</h2>
-    <form class="col-md-6" v-on:submit.prevent="logIn"> 
-        <br>
-        <label>Логин &nbsp;&nbsp;&nbsp;&nbsp;  </label>
-        <input type="text" v-model="login" placeholder="Введите логин"/><br>
-        <label>Пароль &nbsp; </label>
-        <input type="password" v-model="password" placeholder="Введите пароль"/><br>
-        <button class="btn btn-primary" type="submit">Вход</button>
-    </form>
-
-      <button class="btn btn-primary" v-on:click="logOut">Выход</button>
-      <button class="btn btn-primary" v-on:click="authFromCookie">Авторизация по Куки</button>
-
-  </section>
-</template> 
-
-
-
-<script>
-
-import { store } from '../main.js'
-
-
-export default {
-  name: 'Authorize',
-  data () {
-    return {
-      login: '',
-      password: ''
-    }
-  },
-  methods: {
-    logIn: function() {
-      store.commit('loginAndPassword', this.$data );
-      store.dispatch('logIn');
-    },
-    logOut: function() {
-      store.dispatch('logOut');
-    },
-    authFromCookie: function () {
-      store.dispatch('authByCookie');
-    }
-  }
-}
-
-</script>
-
-
-
-
--->
