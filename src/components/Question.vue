@@ -26,6 +26,8 @@
 
   import { store } from '../main.js'
 
+  import { db } from '../main'
+
 
   export default {
     data: () => ({

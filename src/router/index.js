@@ -5,6 +5,7 @@ import Authorize from '@/components/Authorize';
 import User from '@/components/User';
 import Question from '@/components/Question';
 import NotFound from '@/components/NotFound';
+import AddQuestions from '@/components/AddQuestions';
 
 Vue.use(Router);
 
@@ -24,6 +25,11 @@ export default new Router({
             path: '/question/:id',
             name: 'Question',
             component: Question
+        },
+        {
+            path: '/addQuestions',
+            name: 'AddQuestions',
+            component: AddQuestions
         },
         {
             path: '*',
