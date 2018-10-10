@@ -26,27 +26,29 @@
 import { db } from '../main'
 
 export default {
- name: 'HelloWorld',
- data () {
-   return {
-     locations: [],
-     name: '',      // <-- новое свойство
-     image: ''      // <-- новое свойство
-   }
- },
- firestore () {
-   return {
-     locations: db.collection('locations').orderBy('createdAt')
-   }
- },
+    data () {
+        return {
+            locations: [],
+            name: '',      // <-- новое свойство
+            image: ''      // <-- новое свойство
+        }
+    },
+    firestore () {
+        return {
+            locations: db.collection('locations')
+        }
+    },
     methods: {
-        addLocation (name, image) {      
-            const createdAt = new Date()
-            db.collection('locations').add({ name, image, createdAt })
+        addLocation (name, image) {                  
+            db.collection('locations').doc(id).delete()
+            db.collection('locations').add({ name, image })
         },
-            deleteLocation (id) {   // <-- новый метод
+        deleteLocation (id) {   // <-- новый метод
             db.collection('locations').doc(id).delete()
         }
+    },
+    created: function () {
+
     }
 }
 
