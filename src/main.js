@@ -20,18 +20,6 @@ firebase.initializeApp({
 
 export const db = firebase.firestore()
 db.settings({timestampsInSnapshots: true})
-
-    /*
-    const settings = {
-        projectId: 'test-f7b12', 
-        databaseURL: 'https://test-f7b12.firebaseio.com',
-        timestampsInSnapshots: true
-    };
-
-    
-    firestore.settings(settings);
-    export const db = firebase.firestore();*/
-
 Vue.use(Vuex);
 Vue.use(Vuetify);
 
