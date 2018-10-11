@@ -2,24 +2,24 @@
 
     <div>
 
-<form @submit="addQuestion(name, image)">
-<input v-model="name" placeholder="Question Name">
-<input v-model="image" placeholder="Question Image URL">
-<button type="submit">Add New Question</button>
-</form>
+        <form @submit="addQuestion(text, image)">
+            <input v-model="text" placeholder="Question text">
+            <v-btn type="submit">Добавить вопрос</v-btn>
+        </form>
 
+        <article v-for="(question, idx) in questions" :key="idx">
 
-            <article v-for="(question, idx) in questions" :key="idx">
-            <h1>{{ question.name }}</h1>
-            <h1>{{ question.image }}</h1>
-            <button @click="deleteQuestion(question.id)"> 
-            Delete
-            </button>
+            <div>{{ question.text }}</div>
 
-            <button @click="addAnswer(question.id, '!!!!!!!', false )"> 
-            addAnswer
-            </button>
-</article>
+            <div>
+                <v-btn @click="addAnswer(question.id, 'New answer', false)">
+                    Добавить ответ
+                </v-btn>
+            </div>
+            <v-btn @click="deleteQuestion(question.id)">
+                Удалить вопрос
+            </v-btn>
+        </article>
     
     </div>
 
@@ -28,35 +28,33 @@
 <script>
 
 import { db } from '../main'
-
 export default {
     data () {
         return {
             questions: [],
-            name: '',      // <-- новое свойство
+            text: '',      // <-- новое свойство
             image: '',      // <-- новое свойство
             answers: [],
-            text: '',
             truthful: false
         }
     },
     firestore () {
         return {
-            questions: db.collection('questions')//.limitToFirst(5)
+            questions: db.collection('questions').orderBy('createdAt'),
         }
     },
     methods: {
-        addQuestion (name, image) {               
-            db.collection('questions').add({ name, image })
+        addQuestion (text, image) {      // <-- новый метод
+            const createdAt = new Date()
+            db.collection('questions').add({ text, image, createdAt }) 
         },
         deleteQuestion (id) {   // <-- новый метод
             db.collection('questions').doc(id).delete()
         },
         addAnswer (id, text, truthful) {
-            db.collection('questions').doc(id).collection('questions').add( {text, truthful})
+            db.collection('questions').doc(id).collection('answers').add({ text, truthful })
         }
     }
 }
-
 
 </script>
