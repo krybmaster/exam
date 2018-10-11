@@ -2,20 +2,24 @@
 
     <div>
 
-<form @submit="addLocation(name, image)">
-<input v-model="name" placeholder="Location Name">
-<input v-model="image" placeholder="Location Image URL">
-<button type="submit">Add New Location</button>
-</form>
+        <form @submit="addQuestion(text, image)">
+            <input v-model="text" placeholder="Question text">
+            <v-btn type="submit">Добавить вопрос</v-btn>
+        </form>
 
+        <article v-for="(question, idx) in questions" :key="idx">
 
-            <article v-for="(location, idx) in locations" :key="idx">
-            <img :src="location.image">
-            <h1>{{ location.name }}</h1>
-            <button @click="deleteLocation(location.id)"> 
-            Delete
-            </button>
-</article>
+            <div>{{ question.text }}</div>
+
+            <div>
+                <v-btn @click="addAnswer(question.id, 'New answer', false)">
+                    Добавить ответ
+                </v-btn>
+            </div>
+            <v-btn @click="deleteQuestion(question.id)">
+                Удалить вопрос
+            </v-btn>
+        </article>
     
     </div>
 
@@ -24,33 +28,33 @@
 <script>
 
 import { db } from '../main'
-
 export default {
     data () {
         return {
-            locations: [],
-            name: '',      // <-- новое свойство
-            image: ''      // <-- новое свойство
+            questions: [],
+            text: '',      // <-- новое свойство
+            image: '',      // <-- новое свойство
+            answers: [],
+            truthful: false
         }
     },
     firestore () {
         return {
-            locations: db.collection('locations')
+            questions: db.collection('questions').orderBy('createdAt'),
         }
     },
     methods: {
-        addLocation (name, image) {                  
-            db.collection('locations').doc(id).delete()
-            db.collection('locations').add({ name, image })
+        addQuestion (text, image) {      // <-- новый метод
+            const createdAt = new Date()
+            db.collection('questions').add({ text, image, createdAt }) 
         },
-        deleteLocation (id) {   // <-- новый метод
-            db.collection('locations').doc(id).delete()
+        deleteQuestion (id) {   // <-- новый метод
+            db.collection('questions').doc(id).delete()
+        },
+        addAnswer (id, text, truthful) {
+            db.collection('questions').doc(id).collection('answers').add({ text, truthful })
         }
-    },
-    created: function () {
-
     }
 }
-
 
 </script>
