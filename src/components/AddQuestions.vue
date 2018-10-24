@@ -1,59 +1,145 @@
 <template>
 
-    <div>
+  <v-container grid-list-xl text-xs-left>
+      <v-btn @click="getDoc()" >Получить документ</v-btn>
+   <v-layout row wrap>
 
-        <form @submit="addQuestion(text, image)">
-            <input v-model="text" placeholder="Question text">
-            <v-btn type="submit">Добавить вопрос</v-btn>
-        </form>
+        <v-flex xs3 order-md1 order-xs1>
+            
 
-        <article v-for="(question, idx) in questions" :key="idx">
+            <form @submit="addTheme(text)">
+                <div>
+                    <input v-model="text" placeholder="Тема">
+                </div>
+                <div>
+                    <v-btn flat color="orange" type="submit">Добавить тему</v-btn>
+                </div>
+            </form>
 
-            <div>{{ question.text }}</div>
+            <article v-for="theme in themes" :key="theme.id">
+                <v-card>
+                    <v-card-title primary-title>
+                        {{ theme.text }}
+                    </v-card-title>
+                    <v-card-actions>
+                    <v-btn flat color="orange" @click="filter(theme.id)">Выбрать</v-btn>
+                    <v-btn flat color="orange" @click="deleteDoc(theme.id)">Удалить</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </article>
+        </v-flex>
+<!-- 
+        <v-flex xs4 order-md2 order-xs1>
+            <form @submit="addQuestion(text)">
+                <div>
+                    <input v-model="text" placeholder="Вопрос">
+                </div>
+                <div>
+                    <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
+                </div>
+            </form>
+            <article v-for="(question, idx) in fQuestions" :key="idx">
+                <v-card>
+                    <v-card-title primary-title>
+                    <div>
+                    {{ question.text }}
+                    </div>
+                    </v-card-title>
+                    <v-card-actions>
+                    <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
+                    <v-btn flat color="orange" @click="deleteDoc(question.id)">Удалить</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </article>
+        </v-flex>
 
-            <div>
-                <v-btn @click="addAnswer(question.id, 'New answer', false)">
-                    Добавить ответ
-                </v-btn>
-            </div>
-            <v-btn @click="deleteQuestion(question.id)">
-                Удалить вопрос
-            </v-btn>
-        </article>
-    
-    </div>
+        <v-flex xs4 order-md3 order-xs1>
+            <form @submit="addQuestion(text)"> 
+                <div>
+                    <input v-model="text" placeholder="Ответ">
+                </div>
+                <div>
+                    <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
+                </div>
+            </form>
+            <article v-for="(question, idx) in fQuestions" :key="idx">
+                <v-card>
+                    <v-card-title primary-title>
+                    <div>
+                    {{ question.text }}
+                    </div>
+                    </v-card-title>
+                    <v-card-actions>
+                    <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
+                    <v-btn flat color="orange" @click="deleteDoc(question.id)">Удалить</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </article>
+        </v-flex>
+-->
+    </v-layout>  
+
+  </v-container>
 
 </template>
 
 <script>
 
-import { db } from '../main'
+import { db, store } from '../main'
 export default {
-    data () {
-        return {
-            questions: [],
-            text: '',      // <-- новое свойство
-            image: '',      // <-- новое свойство
-            answers: [],
-            truthful: false
-        }
-    },
-    firestore () {
-        return {
-            questions: db.collection('questions').orderBy('createdAt'),
-        }
-    },
+    data: () => ({
+      text: '',
+      themes: [],
+      courceInfo: {
+        Name: 'Name'
+      },
+      drawer: true,
+      drawerRight: true,
+      right: null,
+      left: null
+    }),
+
     methods: {
-        addQuestion (text, image) {      // <-- новый метод
+        filter (id) {
+            store.commit('marker', {type:0, id: id} )
+        },
+        addTheme (text) {
+            db.collection('quiz').add({ text, type: 0 }) 
+        },
+        selectTheme (id) {
+            store.commit('marker', {type:0, id: id} )
+        },
+        addQuestion (text, link) {
             const createdAt = new Date()
-            db.collection('questions').add({ text, image, createdAt }) 
+            db.collection('quiz').add({ text, type: 1, createdAt, link }) 
         },
-        deleteQuestion (id) {   // <-- новый метод
-            db.collection('questions').doc(id).delete()
+        selectQuestion (id) {
+            store.commit('marker', 1, id)
         },
-        addAnswer (id, text, truthful) {
-            db.collection('questions').doc(id).collection('answers').add({ text, truthful })
+
+        addAnswer (text, truthful, link) {
+            db.collection('quiz').add({ text, type: 2, truthful, link })
+        },
+        selectAnswer (id) {
+            store.commit('marker', 2, id)
+        },
+
+        deleteDoc (id) {
+            db.collection('quiz').doc(id).delete()
+        },
+
+        getDoc () {
+            store.dispatch('getData').then(() => {
+                this.$data.themes = store.state.themes
+                console.log(this.$data.themes)
+            });
         }
+    },
+    created: function () {
+        store.dispatch('getData').then(() => {
+            this.$data.themes = store.state.themes
+            console.log(this.$data.themes)
+        });
     }
 }
 
