@@ -1,6 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-
 import App from './App';
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -28,19 +25,58 @@ export const store = new Vuex.Store({
 
     strict: true,
     state: {
-        lp: {}
+        lp: {},
+        marker: {
+            theme: "",
+            question: ""
+        },
+        themes: {
+            
+        }
+        
     },
-    //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
+
     mutations: {
         email(state, lp) {
             state.lp = lp;
+        },
+        marker(state, info) {
+           switch(info.type) {
+            case 0:  
+                state.marker.theme = info.id
+            break;
+            case 1:  
+                state.marker.question = info.id
+            break;
+
+            default:
+            break;
+            }
+        },
+        data(state, data){
+            state.themes = data
         }
     },
+
 
     actions: {
         logIn({ dispatch, commit }) {
             router.push({ path: 'user' })
-            //return dispatch('authByPassword').then(() => {});
+        },
+        getData( {dispatch, commit} ) {
+            db.collection('quiz').where("type", "==", 0).get().then(function(querySnapshot){
+                var docs = [];
+                var id=0;
+                querySnapshot.forEach(function(doc) {
+                    docs.push( {
+                        id: doc.id,
+                        text: doc.data().text, 
+                        type: doc.data().type
+                    });
+                });
+                commit('data', docs)
+            })
+            
         }
     }
 });
