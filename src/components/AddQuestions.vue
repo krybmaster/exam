@@ -136,10 +136,7 @@ export default {
         }
     },
     created: function () {
-        store.dispatch('getData').then(() => {
-            this.$data.themes = store.state.themes
-            console.log(this.$data.themes)
-        });
+        getDoc();
     }
 }
 

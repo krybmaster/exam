@@ -30,9 +30,9 @@ export const store = new Vuex.Store({
             theme: "",
             question: ""
         },
-        themes: {
-            
-        }
+        themes: {},
+        questions: {},
+        answers: {}
         
     },
 
@@ -53,7 +53,8 @@ export const store = new Vuex.Store({
             break;
             }
         },
-        data(state, data){
+        themes(state, data){
+            console.log('comutations')
             state.themes = data
         }
     },
@@ -64,9 +65,8 @@ export const store = new Vuex.Store({
             router.push({ path: 'user' })
         },
         getData( {dispatch, commit} ) {
-            db.collection('quiz').where("type", "==", 0).get().then(function(querySnapshot){
+            db.collection('quiz').get().then(function(querySnapshot){
                 var docs = [];
-                var id=0;
                 querySnapshot.forEach(function(doc) {
                     docs.push( {
                         id: doc.id,
@@ -74,7 +74,7 @@ export const store = new Vuex.Store({
                         type: doc.data().type
                     });
                 });
-                commit('data', docs)
+                commit('themes', docs)
             })
             
         }
