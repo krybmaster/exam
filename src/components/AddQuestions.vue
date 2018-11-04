@@ -1,7 +1,7 @@
 <template>
 
   <v-container grid-list-xl text-xs-left>
-      <v-btn @click="getDoc()" >Получить документ</v-btn>
+      <v-btn @click="getThemes()" >Получить темы</v-btn>
    <v-layout row wrap>
 
         <v-flex xs3 order-md1 order-xs1>
@@ -22,13 +22,13 @@
                         {{ theme.text }}
                     </v-card-title>
                     <v-card-actions>
-                    <v-btn flat color="orange" @click="filter(theme.id)">Выбрать</v-btn>
+                    <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
                     <v-btn flat color="orange" @click="deleteDoc(theme.id)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
             </article>
         </v-flex>
-<!-- 
+
         <v-flex xs4 order-md2 order-xs1>
             <form @submit="addQuestion(text)">
                 <div>
@@ -38,7 +38,7 @@
                     <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
                 </div>
             </form>
-            <article v-for="(question, idx) in fQuestions" :key="idx">
+            <article v-for="question in questions" :key="question.id">
                 <v-card>
                     <v-card-title primary-title>
                     <div>
@@ -62,21 +62,21 @@
                     <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
                 </div>
             </form>
-            <article v-for="(question, idx) in fQuestions" :key="idx">
+            <article v-for="answer in answers" :key="answer.id">
                 <v-card>
                     <v-card-title primary-title>
                     <div>
-                    {{ question.text }}
+                    {{ answer.text }}
                     </div>
                     </v-card-title>
                     <v-card-actions>
-                    <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
-                    <v-btn flat color="orange" @click="deleteDoc(question.id)">Удалить</v-btn>
+                    <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
+                    <v-btn flat color="orange" @click="deleteAnswer(answer.id)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
             </article>
         </v-flex>
--->
+
     </v-layout>  
 
   </v-container>
@@ -90,9 +90,8 @@ export default {
     data: () => ({
       text: '',
       themes: [],
-      courceInfo: {
-        Name: 'Name'
-      },
+      questions: [],
+      answers: [],
       drawer: true,
       drawerRight: true,
       right: null,
@@ -100,43 +99,56 @@ export default {
     }),
 
     methods: {
-        filter (id) {
-            store.commit('marker', {type:0, id: id} )
-        },
         addTheme (text) {
             db.collection('quiz').add({ text, type: 0 }) 
         },
         selectTheme (id) {
-            store.commit('marker', {type:0, id: id} )
+            store.commit('marker', {type: 0, id: id});
+            store.dispatch('getQuestions', id);
         },
-        addQuestion (text, link) {
+        addQuestion (text) {
             const createdAt = new Date()
-            db.collection('quiz').add({ text, type: 1, createdAt, link }) 
+            link = store.state.marker.theme
+            db.collection('quiz').doc(link).collection('questions').add({ text, createdAt }) 
         },
         selectQuestion (id) {
-            store.commit('marker', 1, id)
+            store.commit('marker', {type: 1, id: id})
+            store.dispatch('getAnswers', id);
         },
 
         addAnswer (text, truthful, link) {
             db.collection('quiz').add({ text, type: 2, truthful, link })
         },
+
         selectAnswer (id) {
-            store.commit('marker', 2, id)
+            store.commit('marker', {type: 2, id: id})
         },
 
         deleteDoc (id) {
             db.collection('quiz').doc(id).delete()
         },
 
-        getDoc () {
-            store.dispatch('getData').then(() => {
-                this.$data.themes = store.state.themes
-                console.log(this.$data.themes)
-            });
+        getThemes () {
+            //store.dispatch('getThemes').then(() => {
+                //this.$data.themes = store.state.themes
+            //});
         }
     },
     created: function () {
-        getDoc();
+        store.dispatch('getThemes');
+        store.watch(store.getters.getThemes, themes => {
+            this.$data.themes = themes;
+        });
+        store.watch(store.getters.getQuestions, questions => {
+            this.$data.questions = questions;
+        });
+        store.watch(store.getters.getAnswers, answers => {
+            this.$data.answers = answers;
+        });
+
+        //store.dispatch('getThemes').then(() => {
+        //    this.$data.themes = store.state.themes
+        //});
     }
 }
 

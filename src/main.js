@@ -28,12 +28,19 @@ export const store = new Vuex.Store({
         lp: {},
         marker: {
             theme: "",
-            question: ""
+            question: "",
+            answer: ""
         },
         themes: {},
         questions: {},
         answers: {}
         
+    },
+
+    getters: {
+        getThemes: state => () => state.themes,
+        getQuestions: state => () => state.questions,
+        getAnswers: state => () => state.answers
     },
 
     mutations: {
@@ -48,35 +55,66 @@ export const store = new Vuex.Store({
             case 1:  
                 state.marker.question = info.id
             break;
+            case 2:  
+                state.marker.answer = info.id
+            break;
 
             default:
             break;
             }
         },
         themes(state, data){
-            console.log('comutations')
             state.themes = data
-        }
+        },
+        questions(state, data){
+            state.questions = data
+        },
+        answers(state, data){
+            state.answers = data
+        },
     },
 
 
     actions: {
-        logIn({ dispatch, commit }) {
-            router.push({ path: 'user' })
-        },
-        getData( {dispatch, commit} ) {
+        getThemes( {commit} ) {
             db.collection('quiz').get().then(function(querySnapshot){
                 var docs = [];
                 querySnapshot.forEach(function(doc) {
                     docs.push( {
                         id: doc.id,
-                        text: doc.data().text, 
-                        type: doc.data().type
+                        text: doc.data().text
                     });
                 });
                 commit('themes', docs)
             })
-            
+        },
+        getQuestions( { commit, state }, themeId ) {
+            db.collection('quiz').doc(themeId)
+            .collection('questions').get().then(function(querySnapshot){
+                var docs = [];
+                querySnapshot.forEach(function(doc) {
+                    docs.push( {
+                        id: doc.id,
+                        text: doc.data().text
+                    });
+                });
+                commit('questions', docs)
+            })
+        },
+        //Надо передавать и тему и вопрос!
+        getAnswers( { commit, state }, questionId ) {
+            db.collection('quiz').doc(state.marker.theme)
+            .collection('questions').doc(state.marker.question)
+            .collection('answers').get().then(function(querySnapshot){
+                var docs = [];
+                querySnapshot.forEach(function(doc) {
+                    docs.push( {
+                        id: doc.id,
+                        text: doc.data().text
+                    });
+                });
+                commit('answers', docs)
+            })
         }
     }
 });
