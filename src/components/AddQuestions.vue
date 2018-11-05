@@ -54,7 +54,7 @@
         </v-flex>
 
         <v-flex xs4 order-md3 order-xs1>
-            <form @submit="addQuestion(text)"> 
+            <form @submit="addAnswer(text)"> 
                 <div>
                     <input v-model="text" placeholder="Ответ">
                 </div>
@@ -63,17 +63,14 @@
                 </div>
             </form>
             <article v-for="answer in answers" :key="answer.id">
-                <v-card>
-                    <v-card-title primary-title>
-                    <div>
+                <v-chip close color="orange" label outline >
                     {{ answer.text }}
-                    </div>
-                    </v-card-title>
-                    <v-card-actions>
+                    <!--<v-card-actions>
                     <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
                     <v-btn flat color="orange" @click="deleteAnswer(answer.id)">Удалить</v-btn>
-                    </v-card-actions>
-                </v-card>
+                    </v-card-actions> -->
+                    <v-checkbox> </v-checkbox> 
+                </v-chip>
             </article>
         </v-flex>
 
