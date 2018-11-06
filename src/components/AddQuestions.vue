@@ -5,14 +5,12 @@
    <v-layout row wrap>
 
         <v-flex xs3 order-md1 order-xs1>
-            
-
-            <form @submit="addTheme(text)">
+            <form @submit="addTheme(textTheme)">
                 <div>
-                    <input v-model="text" placeholder="Тема">
+                    <input v-model="textTheme" placeholder="Тема">
                 </div>
                 <div>
-                    <v-btn flat color="orange" type="submit">Добавить тему</v-btn>
+                    <v-btn flat color="green" type="submit">Добавить тему</v-btn>
                 </div>
             </form>
 
@@ -23,16 +21,16 @@
                     </v-card-title>
                     <v-card-actions>
                     <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
-                    <v-btn flat color="orange" @click="deleteDoc(theme.id)">Удалить</v-btn>
+                    <v-btn flat color="red" @click="deleteTheme(theme.id)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
             </article>
         </v-flex>
 
         <v-flex xs4 order-md2 order-xs1>
-            <form @submit="addQuestion(text)">
+            <form @submit="addQuestion(textQuestion)">
                 <div>
-                    <input v-model="text" placeholder="Вопрос">
+                    <input v-model="textQuestion" placeholder="Вопрос">
                 </div>
                 <div>
                     <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
@@ -54,9 +52,9 @@
         </v-flex>
 
         <v-flex xs4 order-md3 order-xs1>
-            <form @submit="addAnswer(text)"> 
+            <form @submit="addAnswer(textAnswer)"> 
                 <div>
-                    <input v-model="text" placeholder="Ответ">
+                    <input v-model="textAnswer" placeholder="Ответ">
                 </div>
                 <div>
                     <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
@@ -85,7 +83,9 @@
 import { db, store } from '../main'
 export default {
     data: () => ({
-      text: '',
+      textTheme: '',
+      textQuestion: '',
+      textAnswer: '',
       themes: [],
       questions: [],
       answers: [],
@@ -97,11 +97,15 @@ export default {
 
     methods: {
         addTheme (text) {
-            db.collection('quiz').add({ text, type: 0 }) 
+            store.dispatch('addTheme', text);
         },
         selectTheme (id) {
             store.commit('marker', {type: 0, id: id});
-            store.dispatch('getQuestions', id);
+            store.dispatch('getQuestions');
+        },
+        deleteTheme (id) {
+            store.commit('marker', {type: 0, id: id});
+            store.dispatch('deleteTheme');
         },
         addQuestion (text) {
             const createdAt = new Date()
@@ -110,7 +114,7 @@ export default {
         },
         selectQuestion (id) {
             store.commit('marker', {type: 1, id: id})
-            store.dispatch('getAnswers', id);
+            store.dispatch('getAnswers');
         },
 
         addAnswer (text, truthful, link) {

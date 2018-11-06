@@ -88,8 +88,8 @@ export const store = new Vuex.Store({
                 commit('themes', docs)
             })
         },
-        getQuestions( { commit, state }, themeId ) {
-            db.collection('quiz').doc(themeId)
+        getQuestions( { commit, state } ) {
+            db.collection('quiz').doc(state.marker.theme)
             .collection('questions').get().then(function(querySnapshot){
                 var docs = [];
                 querySnapshot.forEach(function(doc) {
@@ -101,8 +101,8 @@ export const store = new Vuex.Store({
                 commit('questions', docs)
             })
         },
-        //Надо передавать и тему и вопрос!
-        getAnswers( { commit, state }, questionId ) {
+
+        getAnswers( { commit, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question)
             .collection('answers').get().then(function(querySnapshot){
@@ -115,6 +115,20 @@ export const store = new Vuex.Store({
                 });
                 commit('answers', docs)
             })
+        },
+
+        addTheme( { dispatch }, text ) {
+            db.collection('quiz').add({ text, type: 0 })
+                .then(function(docRef) {
+                    dispatch('getThemes');
+                });
+        },
+
+        deleteTheme( { dispatch, state } ) {
+            db.collection('quiz').doc(state.marker.theme).delete()
+                .then(function() {
+                    dispatch('getThemes');
+                });
         }
     }
 });
