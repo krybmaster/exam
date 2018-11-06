@@ -45,7 +45,7 @@
                     </v-card-title>
                     <v-card-actions>
                     <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
-                    <v-btn flat color="orange" @click="deleteDoc(question.id)">Удалить</v-btn>
+                    <v-btn flat color="red" @click="deleteQuestion(question.id)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
             </article>
@@ -99,40 +99,36 @@ export default {
         addTheme (text) {
             store.dispatch('addTheme', text);
         },
+        addQuestion (text) {
+            store.dispatch('addQuestion', text);
+        },
+        addAnswer (text, truthful, link) {
+            db.collection('quiz').add({ text, type: 2, truthful, link })
+        },
+
         selectTheme (id) {
             store.commit('marker', {type: 0, id: id});
             store.dispatch('getQuestions');
-        },
-        deleteTheme (id) {
-            store.commit('marker', {type: 0, id: id});
-            store.dispatch('deleteTheme');
-        },
-        addQuestion (text) {
-            const createdAt = new Date()
-            link = store.state.marker.theme
-            db.collection('quiz').doc(link).collection('questions').add({ text, createdAt }) 
         },
         selectQuestion (id) {
             store.commit('marker', {type: 1, id: id})
             store.dispatch('getAnswers');
         },
-
-        addAnswer (text, truthful, link) {
-            db.collection('quiz').add({ text, type: 2, truthful, link })
-        },
-
         selectAnswer (id) {
             store.commit('marker', {type: 2, id: id})
         },
 
-        deleteDoc (id) {
-            db.collection('quiz').doc(id).delete()
+        deleteTheme (id) {
+            store.commit('marker', {type: 0, id: id});
+            store.dispatch('deleteTheme');
         },
-
-        getThemes () {
-            //store.dispatch('getThemes').then(() => {
-                //this.$data.themes = store.state.themes
-            //});
+        deleteQuestion (id) {
+            store.commit('marker', {type: 1, id: id});
+            store.dispatch('deleteQuestion');
+        },
+        deleteAnswer (id) {
+            store.commit('marker', {type: 2, id: id});
+            store.dispatch('deleteAnswer');
         }
     },
     created: function () {

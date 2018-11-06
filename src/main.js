@@ -101,7 +101,6 @@ export const store = new Vuex.Store({
                 commit('questions', docs)
             })
         },
-
         getAnswers( { commit, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question)
@@ -123,13 +122,29 @@ export const store = new Vuex.Store({
                     dispatch('getThemes');
                 });
         },
+        addQuestion( { dispatch, state }, text ) {
+            const createdAt = new Date()
+            db.collection('quiz').doc(state.marker.theme)
+            .collection('questions').add({ text, createdAt })
+            .then(function(docRef) {
+                dispatch('getQuestions');
+            });
+        },
 
         deleteTheme( { dispatch, state } ) {
             db.collection('quiz').doc(state.marker.theme).delete()
                 .then(function() {
                     dispatch('getThemes');
                 });
+        },
+        deleteQuestion( { dispatch, state } ) {
+            db.collection('quiz').doc(state.marker.theme)
+            .collection('questions').doc(state.marker.question).delete()
+                .then(function() {
+                    dispatch('getQuestions');
+                });
         }
+
     }
 });
 
