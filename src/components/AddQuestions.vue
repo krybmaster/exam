@@ -84,7 +84,7 @@
 
 <script>
 
-import { db, store } from '../main'
+import { store } from '../main'
 export default {
     data: () => ({
       textTheme: '',

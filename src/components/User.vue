@@ -21,8 +21,6 @@
         </v-card>
       </article>
 
-      <router-link :to="{ name: 'Question', params: { id: 1 }}">Начать</router-link>
-
     </v-content>
 
     <v-footer color="blue-grey" class="white--text" app>
@@ -56,9 +54,9 @@
     created: function () {
       this.userInfo = store.state.lp
       store.dispatch('getThemes');
-        store.watch(store.getters.getThemes, themes => {
-            this.$data.themes = themes;
-        });
+      store.watch(store.getters.getThemes, themes => {
+          this.$data.themes = themes;
+      });
     }
 
   }

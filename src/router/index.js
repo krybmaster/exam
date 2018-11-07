@@ -22,7 +22,7 @@ export default new Router({
             component: User
         },
         {
-            path: '/question/:id',
+            path: '/question',
             name: 'Question',
             component: Question
         },

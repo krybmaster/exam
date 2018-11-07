@@ -98,7 +98,8 @@ export const store = new Vuex.Store({
                 querySnapshot.forEach(function(doc) {
                     docs.push( {
                         id: doc.id,
-                        text: doc.data().text
+                        text: doc.data().text,
+                        createdAt: doc.data().createdAt
                     });
                 });
                 commit('questions', docs)
@@ -112,7 +113,8 @@ export const store = new Vuex.Store({
                 querySnapshot.forEach(function(doc) {
                     docs.push( {
                         id: doc.id,
-                        text: doc.data().text
+                        text: doc.data().text,
+                        truthful: doc.data().truthful
                     });
                 });
                 commit('answers', docs)
@@ -166,6 +168,7 @@ export const store = new Vuex.Store({
 
         startTheme() {
             console.log('startTheme');
+            router.push({ name: 'Question' })
         }
 
     }
