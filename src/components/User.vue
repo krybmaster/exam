@@ -4,11 +4,22 @@
     <v-content>
 
       <div>
-          {{ userInfo.name }} , Вам предлагается пройти тест!
+          {{ userInfo.name }} , выберите тему для тестирования.
       </div>
       <div>
           Результат тестирования Вы получите на почту: {{ userInfo.email }}
       </div>
+
+      <article v-for="theme in themes" :key="theme.id">
+        <v-card>
+          <v-card-title primary-title>
+            {{ theme.text }}
+          </v-card-title>
+          <v-card-actions>
+            <v-btn flat color="orange" @click="startTheme(theme.id)">Выбрать</v-btn>
+          </v-card-actions>
+        </v-card>
+      </article>
 
       <router-link :to="{ name: 'Question', params: { id: 1 }}">Начать</router-link>
 
@@ -32,10 +43,22 @@
       userInfo: {
         email: '',
         name: ''
-      }
+      },
+      themes: []
     }),
+
+    methods: {
+      startTheme (id) {
+        store.commit('marker', {type: 0, id: id});
+        store.dispatch('startTheme');
+      }
+    },
     created: function () {
       this.userInfo = store.state.lp
+      store.dispatch('getThemes');
+        store.watch(store.getters.getThemes, themes => {
+            this.$data.themes = themes;
+        });
     }
 
   }

@@ -76,6 +76,9 @@ export const store = new Vuex.Store({
 
 
     actions: {
+        logIn() {
+            router.push({ path: 'user' })
+        },
         getThemes( {commit} ) {
             db.collection('quiz').get().then(function(querySnapshot){
                 var docs = [];
@@ -159,6 +162,10 @@ export const store = new Vuex.Store({
                 .then(function() {
                     dispatch('getAnswers');
                 });
+        },
+
+        startTheme() {
+            console.log('startTheme');
         }
 
     }
