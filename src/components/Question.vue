@@ -8,11 +8,11 @@
 
 
     <!--<v-radio-group v-model="radios" :mandatory="false">-->
-    <v-radio-group v-model="radios" >
-      <v-radio 
-        v-for="answer in answers" :key="answer.id"
-        label=answer.text 
-        value="R1">
+    <v-radio-group 
+    v-model="answer.id" 
+    v-for="answer in answers" :key="answer.id"
+    label=" ">
+      <v-radio >
       </v-radio>
     </v-radio-group>
 
