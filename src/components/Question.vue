@@ -8,8 +8,12 @@
 
 
     <!--<v-radio-group v-model="radios" :mandatory="false">-->
-    <v-radio-group v-for="answer in answers" :key="answer.id">
-      <v-radio label="Radio 1" value="radio-1">{{answer.text}}</v-radio>
+    <v-radio-group v-model="radios" >
+      <v-radio 
+        v-for="answer in answers" :key="answer.id"
+        label=answer.text 
+        value="R1">
+      </v-radio>
     </v-radio-group>
 
 
