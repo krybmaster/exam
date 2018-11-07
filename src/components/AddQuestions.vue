@@ -52,23 +52,27 @@
         </v-flex>
 
         <v-flex xs4 order-md3 order-xs1>
-            <form @submit="addAnswer(textAnswer)"> 
+            <form @submit="addAnswer(textAnswer, trueAnswer)"> 
                 <div>
                     <input v-model="textAnswer" placeholder="Ответ">
+                    <v-checkbox v-model="trueAnswer" ></v-checkbox>
                 </div>
                 <div>
                     <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
                 </div>
             </form>
             <article v-for="answer in answers" :key="answer.id">
-                <v-chip close color="orange" label outline >
+                <v-card>
+                    <v-card-title primary-title>
+                    <div>
                     {{ answer.text }}
-                    <!--<v-card-actions>
+                    </div>
+                    </v-card-title>
+                    <v-card-actions>
                     <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
-                    <v-btn flat color="orange" @click="deleteAnswer(answer.id)">Удалить</v-btn>
-                    </v-card-actions> -->
-                    <v-checkbox> </v-checkbox> 
-                </v-chip>
+                    <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
+                    </v-card-actions>
+                </v-card>
             </article>
         </v-flex>
 
@@ -86,6 +90,7 @@ export default {
       textTheme: '',
       textQuestion: '',
       textAnswer: '',
+      trueAnswer: false,
       themes: [],
       questions: [],
       answers: [],
@@ -102,8 +107,8 @@ export default {
         addQuestion (text) {
             store.dispatch('addQuestion', text);
         },
-        addAnswer (text, truthful, link) {
-            db.collection('quiz').add({ text, type: 2, truthful, link })
+        addAnswer (text, truthful) {
+            store.dispatch('addAnswer', {text, truthful});
         },
 
         selectTheme (id) {
@@ -142,10 +147,6 @@ export default {
         store.watch(store.getters.getAnswers, answers => {
             this.$data.answers = answers;
         });
-
-        //store.dispatch('getThemes').then(() => {
-        //    this.$data.themes = store.state.themes
-        //});
     }
 }
 

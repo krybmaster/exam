@@ -130,6 +130,14 @@ export const store = new Vuex.Store({
                 dispatch('getQuestions');
             });
         },
+        addAnswer( { dispatch, state }, data ) {
+            db.collection('quiz').doc(state.marker.theme)
+            .collection('questions').doc(state.marker.question)
+            .collection('answers').add( { text: data.text, truthful: data.truthful })
+            .then(function(docRef) {
+                dispatch('getAnswers');
+            });
+        },
 
         deleteTheme( { dispatch, state } ) {
             db.collection('quiz').doc(state.marker.theme).delete()
@@ -142,6 +150,14 @@ export const store = new Vuex.Store({
             .collection('questions').doc(state.marker.question).delete()
                 .then(function() {
                     dispatch('getQuestions');
+                });
+        },
+        deleteAnswer( { dispatch, state } ) {
+            db.collection('quiz').doc(state.marker.theme)
+            .collection('questions').doc(state.marker.question)
+            .collection('answers').doc(state.marker.answer).delete()
+                .then(function() {
+                    dispatch('getAnswers');
                 });
         }
 
