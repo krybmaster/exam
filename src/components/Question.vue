@@ -14,7 +14,7 @@
 
 
 
-    <v-btn> Далее </v-btn>
+    <v-btn @click="nextQuestion"> Далее </v-btn>
     <v-footer color="blue-grey" class="white--text" app>
       <span>Rybakov Konstantin</span>
       <v-spacer></v-spacer>
@@ -38,8 +38,9 @@
     }),
 
     methods: {
-      nextQuestion (num) {
-        id = this.$data.questions[num++].id
+      nextQuestion: function() {
+        console.log('текущий вопрос: ', this.$data.currQuestion )
+        var id = this.$data.questions[this.$data.currQuestion++].id
         store.commit('marker', {type: 1, id: id})
         store.dispatch('getAnswers');
       },
@@ -49,12 +50,13 @@
       store.dispatch('getQuestions');
       store.watch(store.getters.getQuestions, questions => {
         this.$data.questions = questions;
-        console.log(': Q', this.$data.questions);
+        this.$data.allQuestions = questions.length;
+        this.nextQuestion();
+        console.log('число вопросов:', this.$data.allQuestions);
       });
       store.watch(store.getters.getAnswers, answers => {
           this.$data.answers = answers;
       });
-      
     }
   }
 </script>
