@@ -34,14 +34,25 @@
       questions: [],
       radios: '',
       allQuestions: 0,
-      currQuestion: 1
+      currQuestion: 0,
     }),
+
+    methods: {
+      nextQuestion (num) {
+        id = this.$data.questions[num++].id
+        store.commit('marker', {type: 1, id: id})
+        store.dispatch('getAnswers');
+      },
+    },
 
     created: function () {
       store.dispatch('getQuestions');
       store.watch(store.getters.getQuestions, questions => {
         this.$data.questions = questions;
         console.log(': Q', this.$data.questions);
+      });
+      store.watch(store.getters.getAnswers, answers => {
+          this.$data.answers = answers;
       });
       
     }
