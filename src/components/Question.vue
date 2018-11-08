@@ -39,6 +39,7 @@
       radios: '',
       allQuestions: 0,
       currQuestion: 0,
+      timer: ''
     }),
 
     methods: {
@@ -56,6 +57,7 @@
         this.$data.questions = questions;
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
+        this.timer = setInterval(this.nextQuestion, 60000)
         console.log('число вопросов:', this.$data.allQuestions);
       });
       store.watch(store.getters.getAnswers, answers => {
