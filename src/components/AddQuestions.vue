@@ -64,17 +64,15 @@
             <article v-for="answer in answers" :key="answer.id">
                 <v-card>
                     <v-card-title primary-title>
-                    <div>
-                    <v-checkbox
-                        v-model="answer.truthful"
-                    ></v-checkbox>
-                    {{ answer.text }}
-                    </div>
-
+                        <v-checkbox
+                            disabled
+                            :label="`${answer.text}`"
+                            v-model="answer.truthful">
+                        </v-checkbox>
                     </v-card-title>
                     <v-card-actions>
-                    <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
-                    <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
+                        <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
+                        <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
                     </v-card-actions>
                 </v-card>
             </article>

@@ -1,10 +1,6 @@
 <template>
   <v-app id="question">
 
-    <!--<div>Вопрос {{ $route.params.id }}</div> -->
-    <div>Тело вопроса</div>
-
-    <!--<v-radio-group v-model="radios" :mandatory="false">-->
     <p>{{ userRadioAnswer }}</p>
     <v-radio-group v-model="userRadioAnswer">
       <v-radio
@@ -15,16 +11,14 @@
     </v-radio-group>
 
     <v-container fluid>
-    <p>{{ userCheckboxAnswer }}</p>
-    <v-checkbox 
-      v-model="userCheckboxAnswer" 
-        v-for="answer in answers" :key="answer.id"
-        :label="`${answer.text}`"
-        :value="answer.id">
-    </v-checkbox>
+      <p>{{ userCheckboxAnswer }}</p>
+      <v-checkbox 
+        v-model="userCheckboxAnswer" 
+          v-for="answer in answers" :key="answer.id"
+          :label="`${answer.text}`"
+          :value="answer.id">
+      </v-checkbox>
     </v-container>
-
-
 
     <v-btn @click="nextQuestion"> Далее </v-btn>
     <v-footer color="blue-grey" class="white--text" app>
@@ -71,8 +65,19 @@
         this.timer = setInterval(this.nextQuestion, 10000)
         console.log('число вопросов:', this.$data.allQuestions);
       });
+      
       store.watch(store.getters.getAnswers, answers => {
-          this.$data.answers = answers;
+        this.$data.allQuestions = questions.length;
+        var sumTruthful = 0;
+        for (i = 0; i < answers.length; i++) {
+          answers[i].truthful ? sumTruthful++ : {}
+        }
+        switch(sumTruthful) {
+          case 0 :
+            break;
+          default :
+            this.$data.answers = answers;
+        }
       });
     }
   }
