@@ -65,8 +65,12 @@
                 <v-card>
                     <v-card-title primary-title>
                     <div>
+                    <v-checkbox
+                        v-model="answer.truthful"
+                    ></v-checkbox>
                     {{ answer.text }}
                     </div>
+
                     </v-card-title>
                     <v-card-actions>
                     <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>

@@ -4,17 +4,25 @@
     <!--<div>Вопрос {{ $route.params.id }}</div> -->
     <div>Тело вопроса</div>
 
-    <p>{{ radios || 'null' }}</p>
-
-
     <!--<v-radio-group v-model="radios" :mandatory="false">-->
-    <v-radio-group 
-    v-model="answer.id" 
-    v-for="answer in answers" :key="answer.id"
-    label=" ">
-      <v-radio >
+    <p>{{ userRadioAnswer }}</p>
+    <v-radio-group v-model="userRadioAnswer">
+      <v-radio
+        v-for="answer in answers" :key="answer.id"
+        :label="`${answer.text}`"
+        :value="answer.id">
       </v-radio>
     </v-radio-group>
+
+    <v-container fluid>
+    <p>{{ userCheckboxAnswer }}</p>
+    <v-checkbox 
+      v-model="userCheckboxAnswer" 
+        v-for="answer in answers" :key="answer.id"
+        :label="`${answer.text}`"
+        :value="answer.id">
+    </v-checkbox>
+    </v-container>
 
 
 
@@ -39,11 +47,14 @@
       radios: '',
       allQuestions: 0,
       currQuestion: 0,
-      timer: ''
+      timer: '',
+      userRadioAnswer: '',
+      userCheckboxAnswer: []
     }),
 
     methods: {
       nextQuestion: function() {
+        this.$data.currQuestion === ( this.$data.allQuestions - 1 ) ? clearTimeout(this.timer) : console.log('resume')
         console.log('текущий вопрос: ', this.$data.currQuestion )
         var id = this.$data.questions[this.$data.currQuestion++].id
         store.commit('marker', {type: 1, id: id})
@@ -57,7 +68,7 @@
         this.$data.questions = questions;
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
-        this.timer = setInterval(this.nextQuestion, 60000)
+        this.timer = setInterval(this.nextQuestion, 10000)
         console.log('число вопросов:', this.$data.allQuestions);
       });
       store.watch(store.getters.getAnswers, answers => {
