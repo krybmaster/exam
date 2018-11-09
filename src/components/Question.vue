@@ -78,28 +78,26 @@
 
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
-          console.log('this.$data.userRadioAnswer.truthful', this.$data.userRadioAnswer.truthful)
           this.$data.userRadioAnswer.truthful ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
         } else {
-          var setAnswers = true
-          for (var i = 0; i < this.$data.answers.length; i++) {
-            console.log (setAnswers);
-            this.$data.answers[i].truthful ? setAnswers = this.$data.userCheckboxAnswer.indexOf(this.$data.answers[i]) : {} ;
-            if ( !setAnswers ) {
-              this.$data.sumFalseAnswers--
-              break;
-            } else {
-              for (var i = 0; i < this.$data.userCheckboxAnswer.length; i++) {
-                this.$data.userCheckboxAnswer[i].truthful ? setAnswers = this.$data.answers.indexOf(this.$data.userCheckboxAnswer[i]) : {} ;
-                if ( !setAnswers ) {
-                  this.$data.sumFalseAnswers--
-                  break;
-                } else {
-                  this.$data.sumTrueAnswers++
-                }
-              }
-            }
+          let setUserAnswers = new Set();
+          let setAllAnswers = new Set();
+          this.$data.userCheckboxAnswer.forEach(element => {
+            setUserAnswers.add(element)
+          });
+          this.$data.answers.forEach(element => {
+            element.truthful ? setAllAnswers.add(element.id) : {}
+          });
+          var _difference1 = new Set(setUserAnswers);
+          for (var elem of setAllAnswers) {
+          _difference1.delete(elem);
           }
+          console.log('_difference1', _difference1)
+          var _difference2 = new Set(setAllAnswers);
+          for (var elem of setUserAnswers) {
+          _difference2.delete(elem);
+          }
+          _difference1.length || _difference2.length ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
         };
       },
 
