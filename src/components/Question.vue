@@ -56,18 +56,18 @@
 
     methods: {
       nextQuestion: function() {
-        if ( !this.$data.currQuestion == 0 ) {
-          this.evalAnswer();
-        } else {
-        }
+        !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
+        this.$data.userCheckboxAnswer = []
+        console.log('Верных ответов: ' , this.$data.sumTrueAnswers , 'Неверных ответов: ', this.$data.sumFalseAnswers)
+
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
           this.endTheme();
           return;
         } else {
-          console.log('resume')
+          console.log('текущий вопрос: ', this.$data.currQuestion, 'всего вопросов: ', this.$data.allQuestions )
         }
-        console.log('Верных ответов: ' , this.$data.sumTrueAnswers , 'Неверных ответов: ', this.$data.sumFalseAnswers)
-        console.log('текущий вопрос: ', this.$data.currQuestion, 'всего вопросов: ', this.$data.allQuestions )
+        
+        
         var id = this.$data.questions[this.$data.currQuestion].id
         this.$data.textQuestion = this.$data.questions[this.$data.currQuestion].text
         this.$data.currQuestion++;
@@ -92,12 +92,17 @@
           for (var elem of setAllAnswers) {
           _difference1.delete(elem);
           }
-          console.log('_difference1', _difference1)
           var _difference2 = new Set(setAllAnswers);
           for (var elem of setUserAnswers) {
           _difference2.delete(elem);
           }
-          _difference1.length || _difference2.length ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
+          
+          console.log('_difference1.length', _difference1)
+          console.log('_difference2.length', _difference2)
+          console.log('_difference1.length', _difference1.size)
+          console.log('_difference2.length', _difference2.size)
+          _difference1.size + _difference2.size == 0 ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
+          
         };
       },
 
