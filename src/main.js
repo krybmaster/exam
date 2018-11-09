@@ -169,6 +169,10 @@ export const store = new Vuex.Store({
         startTheme() {
             console.log('startTheme');
             router.push({ name: 'Question' })
+        },
+        endTheme() {
+            console.log('endTheme');
+            router.push({ name: 'NotFound' })
         }
 
     }
