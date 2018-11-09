@@ -8,7 +8,7 @@
       <v-radio
         v-for="answer in answers" :key="answer.id"
         :label="`${answer.text}`"
-        :value="answer.id">
+        :value="answer">
       </v-radio>
     </v-radio-group>
 
@@ -49,17 +49,24 @@
       allAnswers: 0,
       timer: '',
       userRadioAnswer: '',
-      userCheckboxAnswer: []
+      userCheckboxAnswer: [],
+      sumTrueAnswers: 0,
+      sumFalseAnswers: 0
     }),
 
     methods: {
       nextQuestion: function() {
+        if ( !this.$data.currQuestion == 0 ) {
+          this.evalAnswer();
+        } else {
+        }
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
           this.endTheme();
           return;
         } else {
           console.log('resume')
         }
+        console.log('Верных ответов: ' , this.$data.sumTrueAnswers , 'Неверных ответов: ', this.$data.sumFalseAnswers)
         console.log('текущий вопрос: ', this.$data.currQuestion, 'всего вопросов: ', this.$data.allQuestions )
         var id = this.$data.questions[this.$data.currQuestion].id
         this.$data.textQuestion = this.$data.questions[this.$data.currQuestion].text
@@ -67,6 +74,33 @@
         console.log('ID: ', id);
         store.commit('marker', {type: 1, id: id})
         store.dispatch('getAnswers');
+      },
+
+      evalAnswer () {
+        if ( this.$data.oneAnswer ) {
+          console.log('this.$data.userRadioAnswer.truthful', this.$data.userRadioAnswer.truthful)
+          this.$data.userRadioAnswer.truthful ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
+        } else {
+          var setAnswers = true
+          for (var i = 0; i < this.$data.answers.length; i++) {
+            console.log (setAnswers);
+            this.$data.answers[i].truthful ? setAnswers = this.$data.userCheckboxAnswer.indexOf(this.$data.answers[i]) : {} ;
+            if ( !setAnswers ) {
+              this.$data.sumFalseAnswers--
+              break;
+            } else {
+              for (var i = 0; i < this.$data.userCheckboxAnswer.length; i++) {
+                this.$data.userCheckboxAnswer[i].truthful ? setAnswers = this.$data.answers.indexOf(this.$data.userCheckboxAnswer[i]) : {} ;
+                if ( !setAnswers ) {
+                  this.$data.sumFalseAnswers--
+                  break;
+                } else {
+                  this.$data.sumTrueAnswers++
+                }
+              }
+            }
+          }
+        };
       },
 
       endTheme () {
