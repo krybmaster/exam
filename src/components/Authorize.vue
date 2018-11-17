@@ -17,11 +17,8 @@
       @input="$v.email.$touch()"
       @blur="$v.email.$touch()"
     ></v-text-field>
-
     <v-btn @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
-
-    <router-link :to="{ name: 'AddQuestions'}">Добавление вопросов</router-link>
   </form>
 </template>
 

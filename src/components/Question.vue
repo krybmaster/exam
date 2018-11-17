@@ -131,16 +131,13 @@
         this.$data.oneAnswer = false;
         switch(sumTruthful) {
           case 0 :
-            console.log('Ни едного верного ответа!')
             this.nextQuestion();
             break;
           case 1 : 
             this.$data.oneAnswer = true;
-            console.log('Вопрос с одним ответом')
           default :
             this.$data.answers = answers;
         }
-        console.log('Ответы получены')
       });
     }
   }

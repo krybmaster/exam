@@ -5,7 +5,7 @@ import Authorize from '@/components/Authorize';
 import User from '@/components/User';
 import Question from '@/components/Question';
 import NotFound from '@/components/NotFound';
-import AddQuestions from '@/components/AddQuestions';
+import Admin from '@/components/Admin';
 
 Vue.use(Router);
 
@@ -27,9 +27,9 @@ export default new Router({
             component: Question
         },
         {
-            path: '/addQuestions',
-            name: 'AddQuestions',
-            component: AddQuestions
+            path: '/admin',
+            name: 'Admin',
+            component: Admin
         },
         {
             path: '*',
