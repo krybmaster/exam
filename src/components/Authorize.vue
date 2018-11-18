@@ -1,25 +1,38 @@
 <template>
-  <form>
-    <v-text-field
-      v-model="name"
-      :error-messages="nameErrors"
-      :counter="40"
-      label="Name"
-      required
-      @input="$v.name.$touch()"
-      @blur="$v.name.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model="email"
-      :error-messages="emailErrors"
-      label="E-mail"
-      required
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-    ></v-text-field>
-    <v-btn @click="submit">submit</v-btn>
-    <v-btn @click="clear">clear</v-btn>
-  </form>
+
+<v-container grid-list-xl text-xs-left>
+  <v-layout row wrap>
+     <v-flex xs12 sm5 md5 offset-xs0 >
+
+      <v-card-text> Вход пользователя </v-card-text>
+
+      <form>
+        <v-text-field
+          v-model="name"
+          :error-messages="nameErrors"
+          :counter="40"
+          label="Name"
+          required
+          @input="$v.name.$touch()"
+          @blur="$v.name.$touch()"
+        ></v-text-field>
+        <v-text-field
+          v-model="email"
+          :error-messages="emailErrors"
+          label="E-mail"
+          required
+          @input="$v.email.$touch()"
+          @blur="$v.email.$touch()"
+        ></v-text-field>
+        <v-btn @click="submit">submit</v-btn>
+        <v-btn @click="clear">clear</v-btn>
+      </form>
+    </v-flex>
+  </v-layout>
+
+  </v-container>
+
+
 </template>
 
 <script>
@@ -61,8 +74,10 @@
     methods: {
       submit () {
         this.$v.$touch()
-        store.commit('email', this.$data  );
-        store.dispatch('logIn');
+        if (!this.emailErrors.length) {
+          store.commit('email', this.$data);
+          store.dispatch('logIn');
+        }
       },
       clear () {
         this.$v.$reset()

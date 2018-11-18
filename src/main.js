@@ -170,9 +170,9 @@ export const store = new Vuex.Store({
             console.log('startTheme');
             router.push({ name: 'Question' })
         },
-        endTheme() {
+        endTheme( data ) {
             console.log('endTheme');
-            router.push({ name: 'NotFound' })
+            router.push({ name: 'Result' })
         }
 
     }

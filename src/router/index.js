@@ -6,6 +6,7 @@ import User from '@/components/User';
 import Question from '@/components/Question';
 import NotFound from '@/components/NotFound';
 import Admin from '@/components/Admin';
+import Result from '@/components/Result';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
             path: '/admin',
             name: 'Admin',
             component: Admin
+        },
+        {
+            path: '/result',
+            name: 'Result',
+            component: Result
         },
         {
             path: '*',

@@ -1,34 +1,39 @@
 <template>
   <v-app id="question">
 
-    <p> {{ textQuestion }} </p>
+    <v-container grid-list-xl text-xs-left>
 
-    <p>{{ userRadioAnswer }}</p> 
-    <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
-      <v-radio
-        v-for="answer in answers" :key="answer.id"
-        :label="`${answer.text}`"
-        :value="answer">
-      </v-radio>
-    </v-radio-group>
+      <v-content>
 
-    <v-container fluid v-else>
-      <p>{{ userCheckboxAnswer }}</p> 
-      <v-checkbox 
-        v-model="userCheckboxAnswer" 
-          v-for="answer in answers" :key="answer.id"
-          :label="`${answer.text}`"
-          :value="answer.id">
-      </v-checkbox>
+        <p> {{ textQuestion }} </p>
+        <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
+          <v-radio
+            v-for="answer in answers" :key="answer.id"
+            :label="`${answer.text}`"
+            :value="answer">
+          </v-radio>
+        </v-radio-group>
+
+        <v-container fluid v-else>
+          <v-checkbox 
+            v-model="userCheckboxAnswer" 
+              v-for="answer in answers" :key="answer.id"
+              :label="`${answer.text}`"
+              :value="answer.id">
+          </v-checkbox>
+        </v-container>
+        <button @click="nextQuestion()"> Далее </button>
+      </v-content>
+
+
+      <v-footer color="blue-grey" class="white--text" app>
+        <span>Rybakov Konstantin</span>
+        <v-spacer></v-spacer>
+        <span> &copy; 2008-2018 Перфоманс Лаб </span>
+      </v-footer> 
+
     </v-container>
 
-    <button @click="nextQuestion()"> Далее </button>
-<!--
-    <v-footer color="blue-grey" class="white--text" app>
-      <span>Rybakov Konstantin</span>
-      <v-spacer></v-spacer>
-      <span> &copy; 2008-2018 Перфоманс Лаб </span>
-    </v-footer> -->
   </v-app>
 </template>
 
@@ -50,6 +55,10 @@
       timer: '',
       userRadioAnswer: '',
       userCheckboxAnswer: [],
+      result: {
+        sumTrueAnswers: 0,
+        sumFalseAnswers: 0
+      },
       sumTrueAnswers: 0,
       sumFalseAnswers: 0
     }),
@@ -58,7 +67,7 @@
       nextQuestion: function() {
         !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
         this.$data.userCheckboxAnswer = []
-        console.log('Верных ответов: ' , this.$data.sumTrueAnswers , 'Неверных ответов: ', this.$data.sumFalseAnswers)
+        console.log('Верных ответов: ' , this.$data.result.sumTrueAnswers , 'Неверных ответов: ', this.$data.result.sumFalseAnswers)
 
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
           this.endTheme();
@@ -78,7 +87,7 @@
 
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
-          this.$data.userRadioAnswer.truthful ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
+          this.$data.userRadioAnswer.truthful ? this.$data.result.sumTrueAnswers++ : this.$data.result.sumFalseAnswers++
         } else {
           let setUserAnswers = new Set();
           let setAllAnswers = new Set();
@@ -96,13 +105,7 @@
           for (var elem of setUserAnswers) {
           _difference2.delete(elem);
           }
-          
-          console.log('_difference1.length', _difference1)
-          console.log('_difference2.length', _difference2)
-          console.log('_difference1.length', _difference1.size)
-          console.log('_difference2.length', _difference2.size)
-          _difference1.size + _difference2.size == 0 ? this.$data.sumTrueAnswers++ : this.$data.sumFalseAnswers++
-          
+          _difference1.size + _difference2.size == 0 ? this.$data.result.sumTrueAnswers++ : this.$data.result.sumFalseAnswers++
         };
       },
 
