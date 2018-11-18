@@ -5,25 +5,36 @@
 
       <v-content>
 
-        <p> {{ textQuestion }} </p>
-        <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
-          <v-radio
-            v-for="answer in answers" :key="answer.id"
-            :label="`${answer.text}`"
-            :value="answer">
-          </v-radio>
-        </v-radio-group>
+        <v-card>
+            <v-card-title primary-title>
+                {{ textQuestion }}
+              <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
+                <v-radio
+                  v-for="answer in answers" :key="answer.id"
+                  :label="`${answer.text}`"
+                  :value="answer">
+                </v-radio>
+              </v-radio-group>
 
-        <v-container fluid v-else>
-          <v-checkbox 
-            v-model="userCheckboxAnswer" 
-              v-for="answer in answers" :key="answer.id"
-              :label="`${answer.text}`"
-              :value="answer.id">
-          </v-checkbox>
-        </v-container>
-        <button @click="nextQuestion()"> Далее </button>
+              <v-container fluid v-else>
+                <br> 
+                <v-checkbox 
+                  v-model="userCheckboxAnswer" 
+                    v-for="answer in answers" :key="answer.id"
+                    :label="`${answer.text}`"
+                    :value="answer.id">
+                </v-checkbox>
+              </v-container>
+
+            </v-card-title>
+            <v-card-actions>
+            <v-btn flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
+            </v-card-actions>
+        </v-card>
+        
       </v-content>
+
+      <v-spacer></v-spacer>
 
 
       <v-footer color="blue-grey" class="white--text" app>
