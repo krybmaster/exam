@@ -4,8 +4,11 @@
 
    <v-layout row wrap>
 
-        <v-flex xs3 order-md1 order-xs1>
-            <form @submit="addTheme(textTheme)">
+        <v-flex xs3 order-md1 order-xs1 >
+            <v-btn fab dark color="orange" @click="hiddenAddTheme = !hiddenAddTheme">
+                <v-icon dark>add</v-icon>
+            </v-btn>
+            <form @submit="addTheme(textTheme)" v-show="!hiddenAddTheme">
                 <div>
                     <input v-model="textTheme" placeholder="Тема">
                 </div>
@@ -27,8 +30,11 @@
             </article>
         </v-flex>
 
-        <v-flex xs4 order-md2 order-xs1>
-            <form @submit="addQuestion(textQuestion)">
+        <v-flex xs4 order-md2 order-xs1 v-show="selectedTheme">
+            <v-btn fab dark color="orange" @click="hiddenAddQuestion = !hiddenAddQuestion">
+                <v-icon dark>add</v-icon>
+            </v-btn>
+            <form @submit="addQuestion(textQuestion)" v-show="!hiddenAddQuestion">
                 <div>
                     <input v-model="textQuestion" placeholder="Вопрос">
                 </div>
@@ -51,8 +57,11 @@
             </article>
         </v-flex>
 
-        <v-flex xs4 order-md3 order-xs1>
-            <form @submit="addAnswer(textAnswer, trueAnswer)"> 
+        <v-flex xs4 order-md3 order-xs1 v-show="selectedQuestion">
+            <v-btn fab dark color="orange" @click="hiddenAddAnswer = !hiddenAddAnswer">
+                <v-icon dark>add</v-icon>
+            </v-btn>
+            <form @submit="addAnswer(textAnswer, trueAnswer)" v-show="!hiddenAddAnswer"> 
                 <div>
                     <input v-model="textAnswer" placeholder="Ответ">
                     <v-checkbox v-model="trueAnswer" ></v-checkbox>
@@ -97,6 +106,11 @@
 import { store } from '../main'
 export default {
     data: () => ({
+      hiddenAddTheme: true,
+      hiddenAddAnswer: true,
+      hiddenAddQuestion: true,
+      selectedTheme: false,
+      selectedQuestion: false,
       textTheme: '',
       textQuestion: '',
       textAnswer: '',
@@ -124,10 +138,12 @@ export default {
         selectTheme (id) {
             store.commit('marker', {type: 0, id: id});
             store.dispatch('getQuestions');
+            this.$data.selectedTheme = true
         },
         selectQuestion (id) {
             store.commit('marker', {type: 1, id: id})
             store.dispatch('getAnswers');
+            this.$data.selectedQuestion = true
         },
         selectAnswer (id) {
             store.commit('marker', {type: 2, id: id})

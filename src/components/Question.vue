@@ -12,6 +12,10 @@
               </div>
             </v-card-title>
 
+            <v-card-actions>
+              <v-btn justify-end flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
+            </v-card-actions>
+
             <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
                 <v-radio
@@ -31,10 +35,10 @@
               </div>
             </v-card-text>
 
-            <v-card-actions>
-            <v-btn justify-end flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
-            </v-card-actions>
+            
         </v-card>
+
+        
         
       </v-content>
 
