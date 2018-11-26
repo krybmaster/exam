@@ -4,22 +4,14 @@
     <v-content>
 
       <div>
-          {{ userInfo.name }} , выберите тему для тестирования.
+          {{ userInfo.name }} , Вы ответили на все вопросы.
+      </div>
+      <div>
+          Из {{ result.true + result.false }} вопросов Вы ответили верно на  {{ result.true }} вопросов.
       </div>
       <div>
           Результат тестирования Вы получите на почту: {{ userInfo.email }}
       </div>
-
-      <article v-for="theme in themes" :key="theme.id">
-        <v-card>
-          <v-card-title primary-title>
-
-          </v-card-title>
-          <v-card-actions>
-
-          </v-card-actions>
-        </v-card>
-      </article>
 
     </v-content>
 
@@ -42,21 +34,18 @@
         email: '',
         name: ''
       },
-      themes: []
+      result: {
+        true: 0,
+        sumFalseAnswers: 0
+      }
     }),
 
     methods: {
-      startTheme (id) {
-        store.commit('marker', {type: 0, id: id});
-        store.dispatch('startTheme');
-      }
+
     },
     created: function () {
       this.userInfo = store.state.lp
-      store.dispatch('getThemes');
-      store.watch(store.getters.getThemes, themes => {
-          this.$data.themes = themes;
-      });
+      this.result = store.state.result
     }
 
   }

@@ -5,30 +5,34 @@
 
       <v-content>
 
-        <v-card>
-            <v-card-title primary-title>
-                {{ textQuestion }}
+        <v-card height="500px">
+            <v-card-title h3 class="headline mb-0" >
+              <div>
+                {{ textQuestion }} 
+              </div>
+            </v-card-title>
+
+            <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
                 <v-radio
                   v-for="answer in answers" :key="answer.id"
                   :label="`${answer.text}`"
-                  :value="answer">
+                  :value="answer.id">
                 </v-radio>
               </v-radio-group>
 
-              <v-container fluid v-else>
-                <br> 
+              <div  v-else>
                 <v-checkbox 
                   v-model="userCheckboxAnswer" 
                     v-for="answer in answers" :key="answer.id"
                     :label="`${answer.text}`"
                     :value="answer.id">
                 </v-checkbox>
-              </v-container>
+              </div>
+            </v-card-text>
 
-            </v-card-title>
             <v-card-actions>
-            <v-btn flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
+            <v-btn justify-end flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
             </v-card-actions>
         </v-card>
         
@@ -67,18 +71,16 @@
       userRadioAnswer: '',
       userCheckboxAnswer: [],
       result: {
-        sumTrueAnswers: 0,
-        sumFalseAnswers: 0
-      },
-      sumTrueAnswers: 0,
-      sumFalseAnswers: 0
+        true: 0,
+        false: 0
+      }
     }),
 
     methods: {
       nextQuestion: function() {
         !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
         this.$data.userCheckboxAnswer = []
-        console.log('Верных ответов: ' , this.$data.result.sumTrueAnswers , 'Неверных ответов: ', this.$data.result.sumFalseAnswers)
+        console.log('Верных ответов: ' , this.$data.result.true , 'Неверных ответов: ', this.$data.result.false)
 
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
           this.endTheme();
@@ -98,7 +100,7 @@
 
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
-          this.$data.userRadioAnswer.truthful ? this.$data.result.sumTrueAnswers++ : this.$data.result.sumFalseAnswers++
+          this.$data.userRadioAnswer.truthful ? this.$data.result.true++ : this.$data.result.false++
         } else {
           let setUserAnswers = new Set();
           let setAllAnswers = new Set();
@@ -116,11 +118,12 @@
           for (var elem of setUserAnswers) {
           _difference2.delete(elem);
           }
-          _difference1.size + _difference2.size == 0 ? this.$data.result.sumTrueAnswers++ : this.$data.result.sumFalseAnswers++
+          _difference1.size + _difference2.size == 0 ? this.$data.result.true++ : this.$data.result.false++
         };
       },
 
       endTheme () {
+        store.commit('result', {true: this.$data.result.true, false: this.$data.result.false});
         store.dispatch('endTheme');
       }
     },
@@ -131,7 +134,6 @@
         this.$data.questions = questions;
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
-        //this.timer = setInterval(this.nextQuestion, 10000)
         console.log('число вопросов:', this.$data.allQuestions);
       });
       

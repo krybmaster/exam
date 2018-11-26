@@ -33,14 +33,19 @@ export const store = new Vuex.Store({
         },
         themes: {},
         questions: {},
-        answers: {}
+        answers: {},
+        result: {
+            true: 0,
+            false: 0
+          }
         
     },
 
     getters: {
         getThemes: state => () => state.themes,
         getQuestions: state => () => state.questions,
-        getAnswers: state => () => state.answers
+        getAnswers: state => () => state.answers,
+        getResult: state => () => state.result
     },
 
     mutations: {
@@ -72,6 +77,10 @@ export const store = new Vuex.Store({
         answers(state, data){
             state.answers = data
         },
+        result(state, data) {
+            state.result = data
+            console.log('state.result', state.result)
+        }
     },
 
 
@@ -170,8 +179,7 @@ export const store = new Vuex.Store({
             console.log('startTheme');
             router.push({ name: 'Question' })
         },
-        endTheme( data ) {
-            console.log('endTheme');
+        endTheme() {
             router.push({ name: 'Result' })
         }
 
