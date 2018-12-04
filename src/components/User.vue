@@ -1,33 +1,40 @@
 <template>
   <v-app id="user">
 
-    <v-content>
+    <v-container fluid grid-list-xs> 
 
-      <div>
-          {{ userInfo.name }} , выберите тему для тестирования.
-      </div>
-      <div>
-          Результат тестирования Вы получите на почту: {{ userInfo.email }}
-      </div>
+      <v-layout >
+        <v-flex xs12 sm5 md5 offset-xs0>
 
-      <article v-for="theme in themes" :key="theme.id">
-        <v-card>
-          <v-card-title primary-title>
-            {{ theme.text }}
-          </v-card-title>
-          <v-card-actions>
-            <v-btn flat color="orange" @click="startTheme(theme.id)">Выбрать</v-btn>
-          </v-card-actions>
-        </v-card>
-      </article>
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>Темы</v-toolbar-title>
+      </v-toolbar>
+      <v-card>
 
-    </v-content>
+        
 
-    <v-footer color="blue-grey" class="white--text" app>
-      <span> Rybakov Konstantin </span>
-      <v-spacer></v-spacer>
-      <span>&copy; 2008-2018 Перфоманс Лаб </span>
-    </v-footer>
+            <article v-for="theme in themes" :key="theme.id">
+              <v-card class="mb-2">
+                <v-card-title primary-title>
+                  {{ theme.text }}
+                </v-card-title>
+                <v-card-actions>
+                  <v-btn flat color="orange" @click="startTheme(theme.id)">Выбрать</v-btn>
+                </v-card-actions>
+              </v-card>
+            </article>
+      
+
+      </v-card>
+
+        </v-flex>
+        </v-layout>
+
+    </v-container>
+
+ 
+
+
   </v-app>
 </template>
 
