@@ -8,11 +8,12 @@
 
             <v-flex xs3 order-md1 order-xs1 >
                 <v-btn fab dark color="orange" @click="hiddenAddTheme = !hiddenAddTheme" class="mb-4">
-                    <v-icon dark>add</v-icon>
+                    <v-icon v-if="hiddenAddTheme">add</v-icon>
+                    <v-icon v-else>remove</v-icon>
                 </v-btn>
                 <form @submit="addTheme(textTheme)" v-show="!hiddenAddTheme">
                     <div>
-                        <input v-model="textTheme" placeholder="Тема">
+                        <v-text-field v-model="textTheme" placeholder="Тема"> </v-text-field>
                     </div>
                     <div>
                         <v-btn flat color="green" type="submit">Добавить тему</v-btn>
@@ -34,11 +35,12 @@
 
             <v-flex xs4 order-md2 order-xs1 v-show="selectedTheme">
                 <v-btn fab dark color="orange" @click="hiddenAddQuestion = !hiddenAddQuestion" class="mb-4">
-                    <v-icon dark>add</v-icon>
+                    <v-icon v-if="hiddenAddQuestion">add</v-icon>
+                    <v-icon v-else>remove</v-icon>
                 </v-btn>
                 <form @submit="addQuestion(textQuestion)" v-show="!hiddenAddQuestion">
                     <div>
-                        <input v-model="textQuestion" placeholder="Вопрос">
+                        <v-text-field v-model="textQuestion" placeholder="Вопрос"> </v-text-field>
                     </div>
                     <div>
                         <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
@@ -61,12 +63,14 @@
 
             <v-flex xs4 order-md3 order-xs1 v-show="selectedQuestion">
                 <v-btn fab dark color="orange" @click="hiddenAddAnswer = !hiddenAddAnswer" class="mb-4">
-                    <v-icon dark>add</v-icon>
+                    <v-icon v-if="hiddenAddAnswer">add</v-icon>
+                    <v-icon v-else>remove</v-icon>
                 </v-btn>
                 <form @submit="addAnswer(textAnswer, trueAnswer)" v-show="!hiddenAddAnswer"> 
                     <div>
-                        <input v-model="textAnswer" placeholder="Ответ">
-                        <v-checkbox v-model="trueAnswer" ></v-checkbox>
+                        <v-text-field v-model="textAnswer" placeholder="Ответ"> </v-text-field>
+                        <v-checkbox :label="Верный" v-model="trueAnswer" ></v-checkbox> 
+                        <span> (Верный) </span>
                     </div>
                     <div>
                         <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
