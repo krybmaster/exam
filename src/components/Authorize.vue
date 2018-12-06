@@ -70,12 +70,13 @@
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors
-        !this.$v.name.maxLength && errors.push('Name must be at most 40 characters long')
+        !this.$v.name.maxLength && errors.push('Very long')
         !this.$v.name.required && errors.push('Name is required.')
         return errors
       },
       emailErrors () {
         const errors = []
+        this.email = this.email.toLowerCase().trim()
         if (!this.$v.email.$dirty) return errors
         !this.$v.email.email && errors.push('Must be valid e-mail')
         !this.$v.email.required && errors.push('E-mail is required')
@@ -87,7 +88,8 @@
       submit () {
         this.$v.$touch()
         if (!this.emailErrors.length) {
-          store.commit('email', this.$data);
+          //this.email.toLowerCase().trim();
+          store.commit('userData', this.$data);
           store.dispatch('logIn');
         }
       },

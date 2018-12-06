@@ -25,7 +25,10 @@ export const store = new Vuex.Store({
 
     strict: true,
     state: {
-        lp: {},
+        lp: {
+            email: '',
+            name: ''
+        },
         marker: {
             theme: "",
             question: "",
@@ -49,7 +52,7 @@ export const store = new Vuex.Store({
     },
 
     mutations: {
-        email(state, lp) {
+        userData(state, lp) {
             state.lp = lp;
         },
         marker(state, info) {

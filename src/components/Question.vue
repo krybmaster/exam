@@ -1,20 +1,18 @@
 <template>
   <v-app id="question">
-
     <v-container grid-list-xl text-xs-left>
-
       <v-content>
 
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Вопрос {{currQuestion}} из {{allQuestions}}</v-toolbar-title>
+        </v-toolbar>
+
         <v-card height="500px">
-            <v-card-title h3 class="headline mb-0" >
+            <v-card-title h3 class="headline mb-7" >
               <div>
                 {{ textQuestion }} 
               </div>
             </v-card-title>
-
-            <v-card-actions>
-              <v-btn justify-end flat color="blue" @click="nextQuestion()">Выбрать</v-btn>
-            </v-card-actions>
 
             <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
@@ -35,23 +33,18 @@
               </div>
             </v-card-text>
 
-            
+            <v-card-actions>
+              <v-btn justify-end color="primary" @click="nextQuestion()">Далее</v-btn>
+            </v-card-actions> 
         </v-card>
-
-        
-        
       </v-content>
-
-      <v-spacer></v-spacer>
-
-
-      <v-footer color="blue-grey" class="white--text" app>
-        <span>Rybakov Konstantin</span>
-        <v-spacer></v-spacer>
-        <span> &copy; 2008-2018 Перфоманс Лаб </span>
-      </v-footer> 
-
     </v-container>
+
+    <v-footer color="blue-grey" class="pa-3">
+      <span>Rybakov Konstantin</span>
+      <v-spacer></v-spacer>
+      <span> &copy; 2008-2018 Перфоманс Лаб </span>
+    </v-footer> 
 
   </v-app>
 </template>

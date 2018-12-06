@@ -1,6 +1,35 @@
 <template>
   <v-app id="result">
 
+
+    <v-container grid-list-xl text-xs-left>
+      <v-content>
+
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Результат</v-toolbar-title>
+        </v-toolbar>
+
+        <v-card >
+            <v-card-title h3 class="headline mb-7" >
+                {{ userInfo.name }}, тест знаний завершен. 
+            </v-card-title>
+
+            <v-card-text>
+              Из {{ result.true + result.false }} вопросов Вы ответили верно на  {{ result.true }} вопросов. Ваша почта {{ userInfo.email }}
+            </v-card-text>
+
+            <v-card-actions> 
+              <v-btn> Получить результат на почту </v-btn>
+            </v-card-actions>
+
+
+        </v-card>
+
+      </v-content>
+
+    </v-container>
+
+<!--
     <v-content>
 
       <div>
@@ -15,11 +44,15 @@
 
     </v-content>
 
-    <v-footer color="blue-grey" class="white--text" app>
+
+    -->
+
+    <v-footer dark  class="pa-3 ;white--text pt-0">
       <span> Rybakov Konstantin </span>
       <v-spacer></v-spacer>
       <span>&copy; 2008-2018 Перфоманс Лаб </span>
     </v-footer>
+
   </v-app>
 </template>
 
