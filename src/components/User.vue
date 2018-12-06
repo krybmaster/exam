@@ -11,19 +11,44 @@
       </v-toolbar>
       <v-card>
 
-        
+        <v-card-text>
 
-            <article v-for="theme in themes" :key="theme.id">
-              <v-card class="mb-2">
-                <v-card-title primary-title>
-                  {{ theme.text }}
-                </v-card-title>
-                <v-card-actions>
-                  <v-btn flat color="orange" @click="startTheme(theme.id)">Выбрать</v-btn>
-                </v-card-actions>
-              </v-card>
-            </article>
+          <div> {{selectTheme}} </div> 
+              
+
+              <v-radio-group v-model="radioTheme">
+                
+                <v-radio
+                  v-for="theme in themes" :key="theme.id"
+                  :label="`${theme.text}`"
+                  :value="theme.id">
+                </v-radio>
+              </v-radio-group>
+              <v-divider> </v-divider>
+
+
+          <!--
+         
+          <v-card class="mb-4" v-for="theme in themes" :key="theme.id">
+            <v-card-title primary-title>
+              
+              {{ theme.text }}
+               
+            </v-card-title>
+            <v-card-actions>
+              <v-btn flat color="orange" @click="startTheme(theme.id)">Выбрать</v-btn>
+            </v-card-actions>
+          </v-card>
+
+  -->
+          
+         
       
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer> </v-spacer>
+          <v-btn :disabled="radioTheme === null" justify-end flat color="blue" @click="startTheme()">Далее</v-btn>
+        </v-card-actions>
 
       </v-card>
 
@@ -45,6 +70,7 @@
   export default {
 
     data: () => ({
+      radioTheme: null,
       userInfo: {
         email: '',
         name: ''
@@ -53,9 +79,13 @@
     }),
 
     methods: {
-      startTheme (id) {
-        store.commit('marker', {type: 0, id: id});
+      startTheme () {
         store.dispatch('startTheme');
+      }
+    },
+    computed: {
+      selectTheme: function() {
+        store.commit('marker', {type: 0, id: this.radioTheme});
       }
     },
     created: function () {
