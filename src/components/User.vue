@@ -34,9 +34,11 @@
 
     </v-container>
 
- 
-
-
+    <v-footer color="blue" class="pa-3">
+      <span>Rybakov Konstantin </span>
+      <v-spacer></v-spacer>
+      <span> &copy; 2008-2018 Перфоманс Лаб </span>
+    </v-footer> 
   </v-app>
 </template>
 

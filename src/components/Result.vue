@@ -31,33 +31,12 @@
             <v-card-actions> 
               <v-btn> Получить результат на почту </v-btn>
             </v-card-actions>
-
-
         </v-card>
 
       </v-content>
-
     </v-container>
 
-<!--
-    <v-content>
-
-      <div>
-          {{ userInfo.name }} , Вы ответили на все вопросы.
-      </div>
-      <div>
-          Из {{ result.true + result.false }} вопросов Вы ответили верно на  {{ result.true }} вопросов.
-      </div>
-      <div>
-          Результат тестирования Вы получите на почту: {{ userInfo.email }}
-      </div>
-
-    </v-content>
-
-
-    -->
-
-    <v-footer dark  class="pa-3 ;white--text pt-0">
+    <v-footer class="pa-3 ;white--text pt-0">
       <span> Rybakov Konstantin </span>
       <v-spacer></v-spacer>
       <span>&copy; 2008-2018 Перфоманс Лаб </span>

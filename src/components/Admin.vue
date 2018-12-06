@@ -1,103 +1,105 @@
 <template>
 
-  <v-container grid-list-xl text-xs-left>
+  <v-app id="question">
 
-   <v-layout row wrap>
+    <v-container grid-list-xl text-xs-left>
 
-        <v-flex xs3 order-md1 order-xs1 >
-            <v-btn fab dark color="orange" @click="hiddenAddTheme = !hiddenAddTheme">
-                <v-icon dark>add</v-icon>
-            </v-btn>
-            <form @submit="addTheme(textTheme)" v-show="!hiddenAddTheme">
-                <div>
-                    <input v-model="textTheme" placeholder="Тема">
-                </div>
-                <div>
-                    <v-btn flat color="green" type="submit">Добавить тему</v-btn>
-                </div>
-            </form>
+    <v-layout row wrap>
 
-            <article v-for="theme in themes" :key="theme.id">
-                <v-card>
-                    <v-card-title primary-title>
-                        {{ theme.text }}
-                    </v-card-title>
-                    <v-card-actions>
-                    <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
-                    <v-btn flat color="red" @click="deleteTheme(theme.id)">Удалить</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </article>
-        </v-flex>
-
-        <v-flex xs4 order-md2 order-xs1 v-show="selectedTheme">
-            <v-btn fab dark color="orange" @click="hiddenAddQuestion = !hiddenAddQuestion">
-                <v-icon dark>add</v-icon>
-            </v-btn>
-            <form @submit="addQuestion(textQuestion)" v-show="!hiddenAddQuestion">
-                <div>
-                    <input v-model="textQuestion" placeholder="Вопрос">
-                </div>
-                <div>
-                    <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
-                </div>
-            </form>
-            <article v-for="question in questions" :key="question.id">
-                <v-card>
-                    <v-card-title primary-title>
+            <v-flex xs3 order-md1 order-xs1 >
+                <v-btn fab dark color="orange" @click="hiddenAddTheme = !hiddenAddTheme" class="mb-4">
+                    <v-icon dark>add</v-icon>
+                </v-btn>
+                <form @submit="addTheme(textTheme)" v-show="!hiddenAddTheme">
                     <div>
-                    {{ question.text }}
+                        <input v-model="textTheme" placeholder="Тема">
                     </div>
-                    </v-card-title>
-                    <v-card-actions>
-                    <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
-                    <v-btn flat color="red" @click="deleteQuestion(question.id)">Удалить</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </article>
-        </v-flex>
+                    <div>
+                        <v-btn flat color="green" type="submit">Добавить тему</v-btn>
+                    </div>
+                </form>
 
-        <v-flex xs4 order-md3 order-xs1 v-show="selectedQuestion">
-            <v-btn fab dark color="orange" @click="hiddenAddAnswer = !hiddenAddAnswer">
-                <v-icon dark>add</v-icon>
-            </v-btn>
-            <form @submit="addAnswer(textAnswer, trueAnswer)" v-show="!hiddenAddAnswer"> 
-                <div>
-                    <input v-model="textAnswer" placeholder="Ответ">
-                    <v-checkbox v-model="trueAnswer" ></v-checkbox>
-                </div>
-                <div>
-                    <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
-                </div>
-            </form>
-            <article v-for="answer in answers" :key="answer.id">
-                <v-card>
-                    <v-card-title primary-title>
-                        <v-checkbox
-                            disabled
-                            :label="`${answer.text}`"
-                            v-model="answer.truthful">
-                        </v-checkbox>
-                    </v-card-title>
-                    <v-card-actions>
-                        <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
-                        <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </article>
-        </v-flex>
+                <article v-for="theme in themes" :key="theme.id" class="mb-4">
+                    <v-card>
+                        <v-card-title primary-title>
+                            {{ theme.text }}
+                        </v-card-title>
+                        <v-card-actions>
+                        <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
+                        <v-btn flat color="red" @click="deleteTheme(theme.id)">Удалить</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </article>
+            </v-flex>
 
-    </v-layout>  
+            <v-flex xs4 order-md2 order-xs1 v-show="selectedTheme">
+                <v-btn fab dark color="orange" @click="hiddenAddQuestion = !hiddenAddQuestion" class="mb-4">
+                    <v-icon dark>add</v-icon>
+                </v-btn>
+                <form @submit="addQuestion(textQuestion)" v-show="!hiddenAddQuestion">
+                    <div>
+                        <input v-model="textQuestion" placeholder="Вопрос">
+                    </div>
+                    <div>
+                        <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
+                    </div>
+                </form>
+                <article v-for="question in questions" :key="question.id" class="mb-4">
+                    <v-card >
+                        <v-card-title primary-title>
+                        <div>
+                        {{ question.text }}
+                        </div>
+                        </v-card-title>
+                        <v-card-actions>
+                        <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
+                        <v-btn flat color="red" @click="deleteQuestion(question.id)">Удалить</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </article>
+            </v-flex>
 
-    <v-footer color="blue-grey" class="white--text" app>
-        <span>Rybakov Konstantin</span>
+            <v-flex xs4 order-md3 order-xs1 v-show="selectedQuestion">
+                <v-btn fab dark color="orange" @click="hiddenAddAnswer = !hiddenAddAnswer" class="mb-4">
+                    <v-icon dark>add</v-icon>
+                </v-btn>
+                <form @submit="addAnswer(textAnswer, trueAnswer)" v-show="!hiddenAddAnswer"> 
+                    <div>
+                        <input v-model="textAnswer" placeholder="Ответ">
+                        <v-checkbox v-model="trueAnswer" ></v-checkbox>
+                    </div>
+                    <div>
+                        <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
+                    </div>
+                </form>
+                <article v-for="answer in answers" :key="answer.id" class="mb-4">
+                    <v-card>
+                        <v-card-title primary-title>
+                            <v-checkbox
+                                disabled
+                                :label="`${answer.text}`"
+                                v-model="answer.truthful">
+                            </v-checkbox>
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
+                            <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </article>
+            </v-flex>
+
+        </v-layout>  
+
+    </v-container>
+
+    <v-footer color="blue" class="pa-3">
+        <span>Rybakov Konstantin </span>
         <v-spacer></v-spacer>
         <span> &copy; 2008-2018 Перфоманс Лаб </span>
     </v-footer> 
 
-  </v-container>
-
-  
+  </v-app>
 
 </template>
 
