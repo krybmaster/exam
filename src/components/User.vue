@@ -47,7 +47,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer> </v-spacer>
-          <v-btn :disabled="radioTheme === null" justify-end flat color="blue" @click="startTheme()">Далее</v-btn>
+          <v-btn :disabled="radioTheme === null" justify-end color="primary" @click="startTheme()">Далее</v-btn>
         </v-card-actions>
 
       </v-card>
