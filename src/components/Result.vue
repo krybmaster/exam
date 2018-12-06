@@ -15,7 +15,17 @@
             </v-card-title>
 
             <v-card-text>
-              Из {{ result.true + result.false }} вопросов Вы ответили верно на  {{ result.true }} вопросов. Ваша почта {{ userInfo.email }}
+              Из 
+              <strong> 
+                {{ result.true + result.false }} 
+              </strong> вопросов Вы ответили верно на  
+              <strong> 
+                {{ result.true }}
+              </strong> 
+              из них. Ваша почта 
+              <strong> 
+                {{ userInfo.email }}
+              </strong> 
             </v-card-text>
 
             <v-card-actions> 
