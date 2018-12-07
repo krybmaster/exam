@@ -33,8 +33,7 @@
               </div>
             </v-card-text>
 
-            <v-card-text style="height: 50px;" class="grey lighten-5"></v-card-text>
-            <v-card-text style="height: 50px; position: relative"></v-card-text>
+            <v-card-text style="height: 100px; position: relative"></v-card-text>
 
             <v-card-actions>
               <v-btn
