@@ -7,7 +7,7 @@
           <v-toolbar-title>Вопрос {{currQuestion}} из {{allQuestions}}</v-toolbar-title>
         </v-toolbar>
 
-        <v-card >
+        <v-card>
             <v-card-title h3 class="headline mb-7" >
               <div>
                 {{ textQuestion }} 
@@ -33,8 +33,8 @@
               </div>
             </v-card-text>
 
-            <v-card-text style="height: 100px;" class="grey lighten-5"></v-card-text>
-            <v-card-text style="height: 100px; position: relative"></v-card-text>
+            <v-card-text style="height: 50px;" class="grey lighten-5"></v-card-text>
+            <v-card-text style="height: 50px; position: relative"></v-card-text>
 
             <v-card-actions>
               <v-btn

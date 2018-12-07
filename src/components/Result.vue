@@ -32,6 +32,21 @@
               <v-btn> Получить результат на почту </v-btn>
             </v-card-actions>
             -->
+            
+
+            <v-card-text style="height: 200px; position: relative"></v-card-text>
+            <v-card-actions>
+              <v-btn
+                @click="toAuthorize"
+                color="primary" 
+                absolute
+                bottom
+                left
+                fab
+              >
+                <v-icon dark>home</v-icon>
+              </v-btn>
+            </v-card-actions>
         </v-card>
 
       </v-content>
@@ -49,6 +64,7 @@
 <script>
 
   import { store } from '../main.js'
+  import router from '../router';
 
   export default {
 
@@ -64,7 +80,9 @@
     }),
 
     methods: {
-
+      toAuthorize() {
+        router.push({ name: 'Authorize'})
+      }
     },
     created: function () {
       this.userInfo = store.state.lp
