@@ -39,7 +39,7 @@
     <v-footer class="pa-3 ;white--text pt-0">
       <span> Rybakov Konstantin </span>
       <v-spacer></v-spacer>
-      <span>&copy; 2008-2018 Перфоманс Лаб </span>
+      <span> &copy; krybmaster </span>
     </v-footer>
 
   </v-app>

@@ -14,6 +14,8 @@
               </div>
             </v-card-title>
 
+            <div> {{userRadioAnswer}} {{userCheckboxAnswer}} </div>
+
             <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
                 <v-radio
@@ -43,7 +45,7 @@
     <v-footer color="blue" class="pa-3">
       <span>Rybakov Konstantin </span>
       <v-spacer></v-spacer>
-      <span> &copy; 2008-2018 Перфоманс Лаб </span>
+      <span> &copy; krybmaster </span>
     </v-footer> 
 
   </v-app>
