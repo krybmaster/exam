@@ -7,21 +7,19 @@
           <v-toolbar-title>Вопрос {{currQuestion}} из {{allQuestions}}</v-toolbar-title>
         </v-toolbar>
 
-        <v-card height="500px">
+        <v-card >
             <v-card-title h3 class="headline mb-7" >
               <div>
                 {{ textQuestion }} 
               </div>
             </v-card-title>
 
-            <div> {{userRadioAnswer}} {{userCheckboxAnswer}} </div>
-
             <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
                 <v-radio
                   v-for="answer in answers" :key="answer.id"
                   :label="`${answer.text}`"
-                  :value="answer.id">
+                  :value="answer">
                 </v-radio>
               </v-radio-group>
 
@@ -30,13 +28,26 @@
                   v-model="userCheckboxAnswer" 
                     v-for="answer in answers" :key="answer.id"
                     :label="`${answer.text}`"
-                    :value="answer.id">
+                    :value="answer">
                 </v-checkbox>
               </div>
             </v-card-text>
 
+            <v-card-text style="height: 100px;" class="grey lighten-5"></v-card-text>
+            <v-card-text style="height: 100px; position: relative"></v-card-text>
+
             <v-card-actions>
-              <v-btn justify-end color="primary" @click="nextQuestion()">Далее</v-btn>
+              <v-btn
+                @click="nextQuestion()"
+                color="primary" 
+                absolute
+                bottom
+                right
+                fab
+              >
+                
+                <v-icon dark>done</v-icon>
+              </v-btn>
             </v-card-actions> 
         </v-card>
       </v-content>
@@ -79,6 +90,7 @@
       nextQuestion: function() {
         !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
         this.$data.userCheckboxAnswer = []
+        this.$data.userRadioAnswer = ''
         console.log('Верных ответов: ' , this.$data.result.true , 'Неверных ответов: ', this.$data.result.false)
 
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
@@ -100,11 +112,13 @@
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
           this.$data.userRadioAnswer.truthful ? this.$data.result.true++ : this.$data.result.false++
+          console.log("оценка одиночного ответа")
+          console.log(this.$data.userRadioAnswer)
         } else {
           let setUserAnswers = new Set();
           let setAllAnswers = new Set();
           this.$data.userCheckboxAnswer.forEach(element => {
-            setUserAnswers.add(element)
+            setUserAnswers.add(element.id)
           });
           this.$data.answers.forEach(element => {
             element.truthful ? setAllAnswers.add(element.id) : {}
@@ -118,6 +132,7 @@
           _difference2.delete(elem);
           }
           _difference1.size + _difference2.size == 0 ? this.$data.result.true++ : this.$data.result.false++
+          console.log("оценка множетвенного ответа")
         };
       },
 
@@ -133,7 +148,6 @@
         this.$data.questions = questions;
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
-        console.log('число вопросов:', this.$data.allQuestions);
       });
       
       store.watch(store.getters.getAnswers, answers => {
@@ -142,7 +156,7 @@
         for (var i = 0; i < answers.length; i++) {
           answers[i].truthful ? sumTruthful++ : {}
         }
-        console.log("Количество верных ответов в вопросе", sumTruthful);
+        console.log(this.$data.allAnswers);
         this.$data.oneAnswer = false;
         switch(sumTruthful) {
           case 0 :
@@ -152,6 +166,7 @@
             this.$data.oneAnswer = true;
           default :
             this.$data.answers = answers;
+            console.log(this.$data.answers)
         }
       });
     }
