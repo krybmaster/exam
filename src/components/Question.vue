@@ -45,7 +45,6 @@
                 right
                 fab
               >
-                
                 <v-icon dark>done</v-icon>
               </v-btn>
             </v-card-actions> 
@@ -91,20 +90,16 @@
         !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
         this.$data.userCheckboxAnswer = []
         this.$data.userRadioAnswer = ''
-        console.log('Верных ответов: ' , this.$data.result.true , 'Неверных ответов: ', this.$data.result.false)
 
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
           this.endTheme();
           return;
         } else {
-          console.log('текущий вопрос: ', this.$data.currQuestion, 'всего вопросов: ', this.$data.allQuestions )
         }
-        
-        
+      
         var id = this.$data.questions[this.$data.currQuestion].id
         this.$data.textQuestion = this.$data.questions[this.$data.currQuestion].text
         this.$data.currQuestion++;
-        console.log('ID: ', id);
         store.commit('marker', {type: 1, id: id})
         store.dispatch('getAnswers');
       },
@@ -112,8 +107,6 @@
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
           this.$data.userRadioAnswer.truthful ? this.$data.result.true++ : this.$data.result.false++
-          console.log("оценка одиночного ответа")
-          console.log(this.$data.userRadioAnswer)
         } else {
           let setUserAnswers = new Set();
           let setAllAnswers = new Set();
@@ -132,7 +125,6 @@
           _difference2.delete(elem);
           }
           _difference1.size + _difference2.size == 0 ? this.$data.result.true++ : this.$data.result.false++
-          console.log("оценка множетвенного ответа")
         };
       },
 
@@ -156,7 +148,7 @@
         for (var i = 0; i < answers.length; i++) {
           answers[i].truthful ? sumTruthful++ : {}
         }
-        console.log(this.$data.allAnswers);
+
         this.$data.oneAnswer = false;
         switch(sumTruthful) {
           case 0 :
@@ -166,7 +158,6 @@
             this.$data.oneAnswer = true;
           default :
             this.$data.answers = answers;
-            console.log(this.$data.answers)
         }
       });
     }
