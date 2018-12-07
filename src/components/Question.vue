@@ -42,7 +42,7 @@
                 color="primary" 
                 absolute
                 bottom
-                right
+                left
                 fab
               >
                 <v-icon dark>done</v-icon>

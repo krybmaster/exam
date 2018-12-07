@@ -18,7 +18,7 @@
               @input="$v.name.$touch()"
               @blur="$v.name.$touch()"
               prepend-icon="person"
-            ></v-text-field>
+            ></v-text-field> <!--
             <v-text-field
               v-model="email"
               :error-messages="emailErrors"
@@ -27,7 +27,7 @@
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
               prepend-icon="email"
-            ></v-text-field>
+            ></v-text-field> -->
           </form>
           </v-card-text>
           <v-card-actions>
@@ -92,11 +92,10 @@
     methods: {
       submit () {
         this.$v.$touch()
-        if (!this.emailErrors.length) {
-          //this.email.toLowerCase().trim();
+        //if (!this.emailErrors.length) {
           store.commit('userData', this.$data);
           store.dispatch('logIn');
-        }
+        //}
       },
       clear () {
         this.$v.$reset()

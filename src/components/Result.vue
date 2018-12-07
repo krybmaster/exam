@@ -11,7 +11,7 @@
 
         <v-card >
             <v-card-title h3 class="headline mb-7" >
-                {{ userInfo.name }}, тест знаний завершен. 
+                {{ userInfo.name }}, экзамен завершен. 
             </v-card-title>
 
             <v-card-text>
@@ -22,15 +22,16 @@
               <strong> 
                 {{ result.true }}
               </strong> 
-              из них. Ваша почта 
+<!--              из них. Ваша почта 
               <strong> 
                 {{ userInfo.email }}
-              </strong> 
+              </strong> -->
             </v-card-text>
-
+<!--
             <v-card-actions> 
               <v-btn> Получить результат на почту </v-btn>
             </v-card-actions>
+            -->
         </v-card>
 
       </v-content>
