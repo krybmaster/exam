@@ -2,7 +2,10 @@
 
   <v-app id="question">
 
-    <v-container grid-list-xl text-xs-left>
+    <v-container 
+        grid-list-xl 
+        text-xs-left   
+    >
 
     <v-layout row wrap>
 
@@ -11,7 +14,7 @@
                     <v-icon v-if="hiddenAddTheme">add</v-icon>
                     <v-icon v-else>remove</v-icon>
                 </v-btn>
-                <form @submit="addTheme(textTheme)" v-show="!hiddenAddTheme">
+                <form @submit="addTheme()" v-show="!hiddenAddTheme">
                     <div>
                         <v-text-field v-model="textTheme" placeholder="Тема"> </v-text-field>
                     </div>
@@ -19,18 +22,22 @@
                         <v-btn flat color="green" type="submit">Добавить тему</v-btn>
                     </div>
                 </form>
-
-                <article v-for="theme in themes" :key="theme.id" class="mb-4">
-                    <v-card>
-                        <v-card-title primary-title>
-                            {{ theme.text }}
-                        </v-card-title>
-                        <v-card-actions>
-                        <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
-                        <v-btn flat color="red" @click="deleteTheme(theme.id)">Удалить</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </article>
+                <v-container
+                    style="max-height: 500px"
+                    class="scroll-y"
+                >
+                    <article v-for="theme in themes" :key="theme.id" class="mb-4">
+                        <v-card>
+                            <v-card-title primary-title>
+                                {{ theme.text }}
+                            </v-card-title>
+                            <v-card-actions>
+                            <v-btn flat color="orange" @click="selectTheme(theme.id)">Выбрать</v-btn>
+                            <v-btn flat color="red" @click="deleteTheme(theme.id)">Удалить</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </article>
+                </v-container>
             </v-flex>
 
             <v-flex xs4 order-md2 order-xs1 v-show="selectedTheme">
@@ -38,7 +45,7 @@
                     <v-icon v-if="hiddenAddQuestion">add</v-icon>
                     <v-icon v-else>remove</v-icon>
                 </v-btn>
-                <form @submit="addQuestion(textQuestion)" v-show="!hiddenAddQuestion">
+                <form @submit="addQuestion()" v-show="!hiddenAddQuestion">
                     <div>
                         <v-text-field v-model="textQuestion" placeholder="Вопрос"> </v-text-field>
                     </div>
@@ -46,19 +53,26 @@
                         <v-btn flat color="orange" type="submit">Добавить Вопрос</v-btn>
                     </div>
                 </form>
-                <article v-for="question in questions" :key="question.id" class="mb-4">
-                    <v-card >
-                        <v-card-title primary-title>
-                        <div>
-                        {{ question.text }}
-                        </div>
-                        </v-card-title>
-                        <v-card-actions>
-                        <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
-                        <v-btn flat color="red" @click="deleteQuestion(question.id)">Удалить</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </article>
+
+                <v-container
+                    style="max-height: 500px"
+                    class="scroll-y"
+                >
+                    <article v-for="question in questions" :key="question.id" class="mb-4">
+                        <v-card>
+                            <v-card-title primary-title>
+                            <div>
+                            {{ question.text }}
+                            </div>
+                            </v-card-title>
+                            <v-card-actions>
+                            <v-btn flat color="orange" @click="selectQuestion(question.id)">Выбрать</v-btn>
+                            <v-btn flat color="red" @click="deleteQuestion(question.id)">Удалить</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </article>
+                </v-container>
+
             </v-flex>
 
             <v-flex xs4 order-md3 order-xs1 v-show="selectedQuestion">
@@ -66,31 +80,39 @@
                     <v-icon v-if="hiddenAddAnswer">add</v-icon>
                     <v-icon v-else>remove</v-icon>
                 </v-btn>
-                <form @submit="addAnswer(textAnswer, trueAnswer)" v-show="!hiddenAddAnswer"> 
+                <form @submit="addAnswer()" v-show="!hiddenAddAnswer"> 
                     <div>
                         <v-text-field v-model="textAnswer" placeholder="Ответ"> </v-text-field>
-                        <v-checkbox :label="Верный" v-model="trueAnswer" ></v-checkbox> 
-                        <span> (Верный) </span>
+                         <v-switch
+                            :label="`Верный: ${trueAnswer ? 'Да' : 'Нет'}`"
+                            v-model="trueAnswer"
+                        ></v-switch>
+
                     </div>
                     <div>
                         <v-btn flat color="orange" type="submit">Добавить Ответ</v-btn>
                     </div>
                 </form>
-                <article v-for="answer in answers" :key="answer.id" class="mb-4">
-                    <v-card>
-                        <v-card-title primary-title>
-                            <v-checkbox
-                                disabled
-                                :label="`${answer.text}`"
-                                v-model="answer.truthful">
-                            </v-checkbox>
-                        </v-card-title>
-                        <v-card-actions>
-                            <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
-                            <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </article>
+                <v-container
+                    style="max-height: 500px"
+                    class="scroll-y"
+                >
+                    <article v-for="answer in answers" :key="answer.id" class="mb-4">
+                        <v-card >
+                            <v-card-title>
+                                <v-checkbox
+                                    disabled
+                                    :label="`${answer.text}`"
+                                    v-model="answer.truthful">
+                                </v-checkbox>
+                            </v-card-title>
+                            <v-card-actions>
+                                <v-btn flat color="orange" @click="selectAnswer(answer.id)">Выбрать</v-btn>
+                                <v-btn flat color="red" @click="deleteAnswer(answer.id)">Удалить</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </article>
+                </v-container>
             </v-flex>
 
         </v-layout>  
@@ -127,24 +149,30 @@ export default {
       drawer: true,
       drawerRight: true,
       right: null,
-      left: null
+      left: null,
+      textCheckBox: 'Верный'
     }),
 
     methods: {
-        addTheme (text) {
-            store.dispatch('addTheme', text);
+        addTheme () {
+            store.dispatch('addTheme', this.textTheme);
+            this.textTheme = ''
         },
-        addQuestion (text) {
-            store.dispatch('addQuestion', text);
+        addQuestion () {
+            store.dispatch('addQuestion', this.textQuestion);
+            this.textQuestion = ''
         },
-        addAnswer (text, truthful) {
-            store.dispatch('addAnswer', {text, truthful});
+        addAnswer () {
+            store.dispatch('addAnswer', {text: this.textAnswer, truthful: this.trueAnswer});
+            this.textAnswer = ''
+            this.trueAnswer = ''
         },
 
         selectTheme (id) {
             store.commit('marker', {type: 0, id: id});
             store.dispatch('getQuestions');
             this.$data.selectedTheme = true
+            this.$data.answers = []
         },
         selectQuestion (id) {
             store.commit('marker', {type: 1, id: id})
