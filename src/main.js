@@ -52,9 +52,20 @@ export const store = new Vuex.Store({
     },
 
     mutations: {
+        /**
+         * Мутация информации со страницы входа
+         * @param {Хранилище} state 
+         * @param {Данные пользователя с формы} lp 
+         */
         userData(state, lp) {
             state.lp = lp;
         },
+        /**
+         * Мутация установки указателей на номер темы или вопроса, в зависимости от info.type
+         * @param {Хранилище} state 
+         * @param {Принимает тип и идентификатор} info 
+         * info.type: 0 - Тема, 1 - Вопрос
+         */
         marker(state, info) {
            switch(info.type) {
             case 0:  
@@ -71,15 +82,22 @@ export const store = new Vuex.Store({
             break;
             }
         },
+        /** Мутация, записывающая темы в хранилище */
         themes(state, data){
             state.themes = data
         },
+
+        /** Мутация, записывающая вопросы в хранилище */
         questions(state, data){
             state.questions = data
         },
+
+        /** Мутация, записывающая ответы в хранилище */
         answers(state, data){
             state.answers = data
         },
+
+        /** Мутация, записывающая результат экзамена в хранилище */
         result(state, data) {
             state.result = data
             console.log('state.result', state.result)
@@ -88,9 +106,15 @@ export const store = new Vuex.Store({
 
 
     actions: {
+        /**
+         * Переход на страницу выбора тем
+         */
         logIn() {
             router.push({ path: 'user' })
         },
+        /**
+         * Запрос получения тем из firebase 
+         */
         getThemes( {commit} ) {
             db.collection('quiz').get().then(function(querySnapshot){
                 var docs = [];
@@ -103,6 +127,9 @@ export const store = new Vuex.Store({
                 commit('themes', docs)
             })
         },
+        /**
+         * Запрос получения вопросов из firebase 
+         */
         getQuestions( { commit, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').get().then(function(querySnapshot){
@@ -117,6 +144,9 @@ export const store = new Vuex.Store({
                 commit('questions', docs)
             })
         },
+        /**
+         * Запрос получения ответов из firebase 
+         */
         getAnswers( { commit, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question)
@@ -132,13 +162,18 @@ export const store = new Vuex.Store({
                 commit('answers', docs)
             })
         },
-
+        /**
+         * Запрос добавления тем в firebase 
+         */
         addTheme( { dispatch }, text ) {
             db.collection('quiz').add({ text, type: 0 })
                 .then(function(docRef) {
                     dispatch('getThemes');
                 });
         },
+        /**
+         * Запрос добавления вопросов в firebase 
+         */
         addQuestion( { dispatch, state }, text ) {
             const createdAt = new Date()
             db.collection('quiz').doc(state.marker.theme)
@@ -147,6 +182,9 @@ export const store = new Vuex.Store({
                 dispatch('getQuestions');
             });
         },
+        /**
+         * Запрос добавления ответов в firebase 
+         */
         addAnswer( { dispatch, state }, data ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question)
@@ -155,13 +193,18 @@ export const store = new Vuex.Store({
                 dispatch('getAnswers');
             });
         },
-
+        /**
+         * Запрос удаления темы из firebase 
+         */
         deleteTheme( { dispatch, state } ) {
             db.collection('quiz').doc(state.marker.theme).delete()
                 .then(function() {
                     dispatch('getThemes');
                 });
         },
+        /**
+         * Запрос удаления вопроса из firebase 
+         */
         deleteQuestion( { dispatch, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question).delete()
@@ -169,6 +212,9 @@ export const store = new Vuex.Store({
                     dispatch('getQuestions');
                 });
         },
+        /**
+         * Запрос удаления ответа из firebase 
+         */
         deleteAnswer( { dispatch, state } ) {
             db.collection('quiz').doc(state.marker.theme)
             .collection('questions').doc(state.marker.question)
@@ -177,11 +223,15 @@ export const store = new Vuex.Store({
                     dispatch('getAnswers');
                 });
         },
-
+        /**
+         * Переход к странице викторины 
+         */
         startTheme() {
-            console.log('startTheme');
             router.push({ name: 'Question' })
         },
+        /**
+         * Переход к странице результата
+         */
         endTheme() {
             router.push({ name: 'Result' })
         }
@@ -197,7 +247,4 @@ new Vue({
     components: { App },
     template: '<App/>',
 
-    created: function() {
-        console.log('Created');
-    }
 });

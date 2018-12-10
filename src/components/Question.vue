@@ -85,6 +85,9 @@
     }),
 
     methods: {
+      /**
+       * Переход к следующему вопросу
+       */
       nextQuestion: function() {
         !this.$data.currQuestion == 0 ? this.evalAnswer() : {}
         this.$data.userCheckboxAnswer = []
@@ -102,7 +105,9 @@
         store.commit('marker', {type: 1, id: id})
         store.dispatch('getAnswers');
       },
-
+      /**
+       * Проверка ответа 
+       */
       evalAnswer () {
         if ( this.$data.oneAnswer ) {
           this.$data.userRadioAnswer.truthful ? this.$data.result.true++ : this.$data.result.false++
@@ -126,13 +131,17 @@
           _difference1.size + _difference2.size == 0 ? this.$data.result.true++ : this.$data.result.false++
         };
       },
-
+      /**
+       * Завершение викторины с записью резуьтата в хранилище и переходом на страницу результата
+       */
       endTheme () {
         store.commit('result', {true: this.$data.result.true, false: this.$data.result.false});
         store.dispatch('endTheme');
       }
     },
-
+    /**
+     * Инициализация викторины
+     */
     created: function () {
       store.dispatch('getQuestions');
       store.watch(store.getters.getQuestions, questions => {
@@ -140,7 +149,7 @@
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
       });
-      
+      //Наблюдение за сменяющимися ответами для их появления на странице
       store.watch(store.getters.getAnswers, answers => {
         this.$data.allAnswers = answers.length;
         var sumTruthful = 0;
