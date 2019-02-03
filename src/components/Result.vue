@@ -64,7 +64,7 @@
 <script>
 
   import { store } from '../main.js'
-  import router from '../router';
+  //import router from '../router';
 
   export default {
 
@@ -81,7 +81,8 @@
 
     methods: {
       toAuthorize() {
-        router.push({ name: 'Authorize'})
+        store.dispatch('refreshExam')
+        //router.push({ name: 'Authorize'})
       }
     },
     created: function () {

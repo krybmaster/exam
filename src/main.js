@@ -100,7 +100,6 @@ export const store = new Vuex.Store({
         /** Мутация, записывающая результат экзамена в хранилище */
         result(state, data) {
             state.result = data
-            console.log('state.result', state.result)
         }
     },
 
@@ -234,6 +233,13 @@ export const store = new Vuex.Store({
          */
         endTheme() {
             router.push({ name: 'Result' })
+        },
+        /**
+         * Обнуление результаатов екзамена
+         */
+        refreshExam(state) {
+            state = null
+            router.push({ name: 'Authorize' })
         }
 
     }

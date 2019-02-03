@@ -17,18 +17,21 @@
             <v-card-text>
               <v-radio-group v-if="oneAnswer" v-model="userRadioAnswer">
                 <v-radio
+                  height=100
                   v-for="answer in answers" :key="answer.id"
                   :label="`${answer.text}`"
                   :value="answer">
                 </v-radio>
+                
               </v-radio-group>
 
-              <div  v-else>
+              <div v-else>
                 <v-checkbox 
+                  height=5
                   v-model="userCheckboxAnswer" 
-                    v-for="answer in answers" :key="answer.id"
-                    :label="`${answer.text}`"
-                    :value="answer">
+                  v-for="answer in answers" :key="answer.id"
+                  :label="`${answer.text}`"
+                  :value="answer">
                 </v-checkbox>
               </div>
             </v-card-text>
@@ -94,6 +97,7 @@
         this.$data.userRadioAnswer = ''
 
         if ( this.$data.currQuestion === ( this.$data.allQuestions ) ) {
+          this.$data.currQuestion = 0
           this.endTheme();
           return;
         } else {
@@ -144,12 +148,13 @@
      */
     created: function () {
       store.dispatch('getQuestions');
+      //Наблюдение за сменяющимися вопросами
       store.watch(store.getters.getQuestions, questions => {
         this.$data.questions = questions;
         this.$data.allQuestions = questions.length;
         this.nextQuestion();
       });
-      //Наблюдение за сменяющимися ответами для их появления на странице
+      //Наблюдение за сменяющимися ответами
       store.watch(store.getters.getAnswers, answers => {
         this.$data.allAnswers = answers.length;
         var sumTruthful = 0;
